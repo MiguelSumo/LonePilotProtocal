@@ -5,6 +5,12 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     public float moveSpeed = 7f;
+
+    [Header("Shooting")]
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float fireRate = 0.15f;
+    private float nextFireTime;
+
     private IMovementStrategy _currentStrategy;
 
     void Start()
@@ -17,5 +23,19 @@ public class ShipController : MonoBehaviour
     {
         // Execute the strategy
         _currentStrategy?.Move(transform, moveSpeed);
+        HandleShooting();
+    }
+    private void HandleShooting()
+    {
+        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
+        {
+            nextFireTime = Time.time + fireRate;
+            BulletPool.Instance.GetBullet(firePoint.position, firePoint.rotation);
+        }
+    }
+
+    public void SetStrategy(IMovementStrategy strategy)
+    {
+        _currentStrategy = strategy;
     }
 }

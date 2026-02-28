@@ -53,4 +53,15 @@ public class Asteroid : MonoBehaviour
             // Optional: Trigger an explosion effect here
         }
     }
+
+
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
+        {
+            damageable.TakeDamage(5);
+        }
+    }
 }

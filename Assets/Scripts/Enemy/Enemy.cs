@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
     // --- Movement & Combat Settings ---
     public float moveSpeed = 3.0f;
@@ -17,8 +17,17 @@ public class Enemy : MonoBehaviour
     // --- Strategy ---
     private ITrackingStrategy trackingStrategy;
 
+    // 
+    [SerializeField] private int killScore = 20;
+    [SerializeField] private int damageScore = 5;
+    [SerializeField] private IntEventChannelSO scoreEvent;
+    public Team Team => Team.Enemy;
+
+
+    private float health = 100f;
+
     private void Start()
-    { 
+    {
 
         // Set default movement strategy
         trackingStrategy = new SimpleTracking();
@@ -55,7 +64,7 @@ public class Enemy : MonoBehaviour
         Vector2 direction =
             (Target.position - transform.position).normalized;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg +90f;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
@@ -65,4 +74,19 @@ public class Enemy : MonoBehaviour
     {
         RB = GetComponent<Rigidbody2D>();
     }
+
+    public void TakeDamage(float damage)
+    {  
+        health -= damage;
+        if(health > 0f) {
+            scoreEvent.RaiseEvent(damageScore); // score points the player gets if it damages the enemy
+        }
+
+        if (health <= 0f)
+        {
+            scoreEvent.RaiseEvent(killScore); // score points the player gets if it kills the enemy
+            Destroy(gameObject);
+        }
+    }
+
 }

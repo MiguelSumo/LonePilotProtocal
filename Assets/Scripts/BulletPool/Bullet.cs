@@ -5,8 +5,13 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed = 20f;
+    [SerializeField] private float damage = 5f;
+
 
     private Camera _cam;
+
+    [SerializeField] private Team ownerTeam;
+
 
     private void Awake()
     {
@@ -36,9 +41,20 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.TryGetComponent<IDamageable>(out var damageable))
+        {
+            if (damageable.Team != ownerTeam)
+            {
+                damageable.TakeDamage(damage);
+                //Destroy(gameObject);  //removed because bullet pooling is used below here
+            }
+        }
+
         if (other.CompareTag("Enemy"))
         {
             BulletPool.Instance.ReturnBullet(gameObject);
-        }
+        }   
+
+        
     }
 }

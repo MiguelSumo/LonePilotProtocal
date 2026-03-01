@@ -7,6 +7,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 100f;
+    public Team Team => Team.Player;
+
 
     private float currentHealth;
 

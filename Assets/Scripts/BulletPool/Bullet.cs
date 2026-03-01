@@ -45,16 +45,17 @@ public class Bullet : MonoBehaviour
         {
             if (damageable.Team != ownerTeam)
             {
-                damageable.TakeDamage(damage);
-                //Destroy(gameObject);  //removed because bullet pooling is used below here
+                var damageInfo = new DamageInfo(damage, ownerTeam, DamageType.Bullet);
+                damageable.TakeDamage(damageInfo);
+                //Destroy(gameObject); //removed because bullet pooling is used below here
             }
         }
 
         if (other.CompareTag("Enemy"))
         {
             BulletPool.Instance.ReturnBullet(gameObject);
-        }   
+        }
 
-        
+
     }
 }

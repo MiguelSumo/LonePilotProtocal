@@ -18,9 +18,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         NotifyHealthChanged();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(DamageInfo damageInfo)
     {
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth - damageInfo.Amount, 0f, maxHealth);
         NotifyHealthChanged();
     }
 

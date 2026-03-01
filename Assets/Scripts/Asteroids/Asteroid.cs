@@ -11,6 +11,9 @@ public class Asteroid : MonoBehaviour
 
     // We'll use this to calculate the screen bounds
     private float _despawnPadding = 5f;
+    [SerializeField] private int asteroidDamage = 5;
+    [SerializeField] private Team ownerTeam;
+
 
     void Awake() => _spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -54,14 +57,12 @@ public class Asteroid : MonoBehaviour
         }
     }
 
-
-
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
-            damageable.TakeDamage(5);
+            var damageInfo = new DamageInfo(asteroidDamage, Team.Enemy, DamageType.Asteroid);
+            damageable.TakeDamage(damageInfo);
         }
     }
 }

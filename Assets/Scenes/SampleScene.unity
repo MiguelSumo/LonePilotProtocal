@@ -259,7 +259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &424334686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1432,7 +1432,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   attackRange: 1.5
-  scoreValue: 100
+  killScore: 20
+  damageScore: 5
   scoreEvent: {fileID: 11400000, guid: 6f750f624b511494ead87e4159f52001, type: 2}
 --- !u!212 &1771071721
 SpriteRenderer:

@@ -75,18 +75,52 @@ public class Enemy : MonoBehaviour, IDamageable
         RB = GetComponent<Rigidbody2D>();
     }
 
-    public void TakeDamage(float damage)
-    {  
-        health -= damage;
-        if(health > 0f) {
-            scoreEvent.RaiseEvent(damageScore); // score points the player gets if it damages the enemy
+    public void TakeDamage(DamageInfo damageInfo)
+    {    
+        health -= damageInfo.Amount;
+
+
+        switch (damageInfo.Type)
+        {
+            case DamageType.Bullet:
+                BulletDamage(damageInfo);
+                break;
+
+            case DamageType.Asteroid:
+                AsteroidDamage(damageInfo);
+                break;
         }
 
         if (health <= 0f)
         {
-            scoreEvent.RaiseEvent(killScore); // score points the player gets if it kills the enemy
-            Destroy(gameObject);
+            Die(damageInfo);
         }
+    }
+
+
+    private void BulletDamage(DamageInfo damageInfo)
+    {   //update player score if damages the enemy;
+        Debug.Log($"Bullet hit me {health}");
+        if (health > 0f)
+        {
+            scoreEvent.RaiseEvent(damageScore); // damage score
+        }
+
+        if (health <= 0f)
+        {
+            scoreEvent.RaiseEvent(killScore); // kills score 
+        }
+    }
+
+    private void AsteroidDamage(DamageInfo damageInfo)
+    {
+        Debug.Log($"Asteroid hit me {health}");
+    }
+
+
+    private void Die(DamageInfo damageInfo)
+    {
+        Destroy(gameObject);
     }
 
 }

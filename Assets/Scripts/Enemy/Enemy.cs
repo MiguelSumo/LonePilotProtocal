@@ -22,6 +22,10 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private int damageScore = 5;
     [SerializeField] private IntEventChannelSO scoreEvent;
     public Team Team => Team.Enemy;
+    [SerializeField] GameObject deathParticlePrefab;
+    bool isDead = false;
+
+
 
 
     private float health = 100f;
@@ -76,7 +80,8 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(DamageInfo damageInfo)
-    {    
+    {
+        if (isDead) return;
         health -= damageInfo.Amount;
 
 
@@ -120,6 +125,13 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Die(DamageInfo damageInfo)
     {
+        isDead = true;
+
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        Instantiate(deathParticlePrefab, transform.position, Quaternion.identity);
+
         Destroy(gameObject);
     }
 

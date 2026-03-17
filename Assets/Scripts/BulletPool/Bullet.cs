@@ -41,8 +41,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         if (other.TryGetComponent<IDamageable>(out var damageable))
         {
+        
             if (damageable.Team != ownerTeam)
             {
                 var damageInfo = new DamageInfo(damage, ownerTeam, DamageType.Bullet);

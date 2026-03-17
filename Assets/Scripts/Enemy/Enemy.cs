@@ -18,8 +18,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private ITrackingStrategy trackingStrategy;
 
     // 
-    [SerializeField] private int killScore = 20;
-    [SerializeField] private int damageScore = 5;
+    [SerializeField] private int killScore = GameScoreValues.EnemyKillScore;
+    [SerializeField] private int damageScore = GameScoreValues.EnemyDamageScore;
     [SerializeField] private IntEventChannelSO scoreEvent;
     public Team Team => Team.Enemy;
     [SerializeField] GameObject deathParticlePrefab;
@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
 
 
-    private float health = 100f;
+    private float health = GameScoreValues.EnemyHealthMax;
 
     private void Start()
     {
@@ -113,13 +113,13 @@ public class Enemy : MonoBehaviour, IDamageable
 
         if (health <= 0f)
         {
-            scoreEvent.RaiseEvent(killScore); // kills score 
+            scoreEvent.RaiseEvent(killScore); // kill score 
         }
     }
 
     private void AsteroidDamage(DamageInfo damageInfo)
     {
-        Debug.Log($"Asteroid hit me {health}");
+        Debug.Log($"Asteroid hit me");
     }
 
 

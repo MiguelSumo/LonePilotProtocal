@@ -16,7 +16,7 @@ public class ChaseState : IEnemyState
         if (enemy.Target == null)
             return;
 
-        // 1️⃣ Move using strategy
+        //  Move using strategy
         enemy.GetTrackingStrategy().Move(
             enemy,
             enemy.Target,
@@ -25,7 +25,7 @@ public class ChaseState : IEnemyState
 
         enemy.FaceTarget();
 
-        // 2️⃣ Check distance to switch to attack
+        //  Check distance to switch to attack
         float distance = Vector2.Distance(
             enemy.transform.position,
             enemy.Target.position

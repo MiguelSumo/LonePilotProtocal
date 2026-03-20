@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
     // --- Movement & Combat Settings ---
     public float moveSpeed = 3.0f;
@@ -19,6 +19,19 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private TrackingType trackingType;
+
+    // 
+    [SerializeField] private int killScore = 20;
+    [SerializeField] private int damageScore = 5;
+    [SerializeField] private IntEventChannelSO scoreEvent;
+    public Team Team => Team.Enemy;
+    [SerializeField] GameObject deathParticlePrefab;
+    bool isDead = false;
+
+
+
+
+    private float health = 100f;
 
     private void Start()
     {
@@ -96,6 +109,64 @@ public class Enemy : MonoBehaviour
         }
 
     }
+
+    public void TakeDamage(DamageInfo damageInfo)
+    {
+        if (isDead) return;
+        health -= damageInfo.Amount;
+
+
+        switch (damageInfo.Type)
+        {
+            case DamageType.Bullet:
+                BulletDamage(damageInfo);
+                break;
+
+            case DamageType.Asteroid:
+                AsteroidDamage(damageInfo);
+                break;
+        }
+
+        if (health <= 0f)
+        {
+            Die(damageInfo);
+        }
+    }
+
+
+    private void BulletDamage(DamageInfo damageInfo)
+    {   //update player score if damages the enemy;
+        Debug.Log($"Bullet hit me {health}");
+        if (health > 0f)
+        {
+            scoreEvent.RaiseEvent(damageScore); // damage score
+        }
+
+        if (health <= 0f)
+        {
+            scoreEvent.RaiseEvent(killScore); // kills score 
+        }
+    }
+
+    private void AsteroidDamage(DamageInfo damageInfo)
+    {
+        Debug.Log($"Asteroid hit me {health}");
+    }
+
+
+    private void Die(DamageInfo damageInfo)
+    {
+        isDead = true;
+
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        Instantiate(deathParticlePrefab, transform.position, Quaternion.identity);
+
+        Destroy(gameObject);
+    }
+
+}
 
     //Animation 
     public Animator animator;

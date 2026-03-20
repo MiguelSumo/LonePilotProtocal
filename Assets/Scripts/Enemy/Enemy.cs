@@ -17,12 +17,12 @@ public class Enemy : MonoBehaviour
     // --- Strategy ---
     private ITrackingStrategy trackingStrategy;
 
+    [SerializeField]
+    private TrackingType trackingType;
+
     private void Start()
-    { 
-
-        // Set default movement strategy
-        trackingStrategy = new SimpleTracking();
-
+    {
+        trackingStrategy = CreateStrategy(trackingType);
         // Start in Chase state
         ChangeState(new ChaseState());
     }
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
         Vector2 direction =
             (Target.position - transform.position).normalized;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg +90f;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
@@ -64,5 +64,41 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
     }
+
+
+    //Handle setting the tracking strategy
+
+    public enum TrackingType
+    {
+        Simple,
+        ZigZag,
+        Predictive
+    }
+    private ITrackingStrategy CreateStrategy(TrackingType type)
+    {
+        switch (type)
+        {
+            case TrackingType.Simple:
+                return new SimpleTracking();
+
+            case TrackingType.ZigZag:
+                return new ZigzagTracking();
+
+            case TrackingType.Predictive:
+                return new PredictiveTracking();
+
+            default:
+                return new SimpleTracking();
+
+        }
+
+    }
+
+    //Animation 
+    public Animator animator;
+
+
 }

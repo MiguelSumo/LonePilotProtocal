@@ -17,6 +17,9 @@ public class Enemy : MonoBehaviour, IDamageable
     // --- Strategy ---
     private ITrackingStrategy trackingStrategy;
 
+    [SerializeField]
+    private TrackingType trackingType;
+
     // 
     [SerializeField] private int killScore = 20;
     [SerializeField] private int damageScore = 5;
@@ -32,10 +35,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Start()
     {
-
-        // Set default movement strategy
-        trackingStrategy = new SimpleTracking();
-
+        trackingStrategy = CreateStrategy(trackingType);
         // Start in Chase state
         ChangeState(new ChaseState());
     }
@@ -77,6 +77,37 @@ public class Enemy : MonoBehaviour, IDamageable
     void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
+    }
+
+
+    //Handle setting the tracking strategy
+
+    public enum TrackingType
+    {
+        Simple,
+        ZigZag,
+        Predictive
+    }
+    private ITrackingStrategy CreateStrategy(TrackingType type)
+    {
+        switch (type)
+        {
+            case TrackingType.Simple:
+                return new SimpleTracking();
+
+            case TrackingType.ZigZag:
+                return new ZigzagTracking();
+
+            case TrackingType.Predictive:
+                return new PredictiveTracking();
+
+            default:
+                return new SimpleTracking();
+
+        }
+
     }
 
     public void TakeDamage(DamageInfo damageInfo)
@@ -134,5 +165,11 @@ public class Enemy : MonoBehaviour, IDamageable
 
         Destroy(gameObject);
     }
+
+}
+
+    //Animation 
+    public Animator animator;
+
 
 }

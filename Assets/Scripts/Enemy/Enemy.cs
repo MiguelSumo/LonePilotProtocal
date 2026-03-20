@@ -166,10 +166,11 @@ public class Enemy : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-}
+    
 
-    //Animation 
-    public Animator animator;
+        //Animation 
+        public Animator animator;
 
 
+    
 }

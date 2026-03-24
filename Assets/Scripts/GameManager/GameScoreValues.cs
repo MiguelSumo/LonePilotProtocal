@@ -10,8 +10,9 @@ public static class GameScoreValues
     public const int EnemyDamageScore = 5;
 
 
-
     // asteriod score
+
+
     public const int AsteroidDestroyedScore = 1;
 }
 

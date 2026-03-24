@@ -41,21 +41,27 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         if (other.TryGetComponent<IDamageable>(out var damageable))
         {
+        
             if (damageable.Team != ownerTeam)
             {
                 var damageInfo = new DamageInfo(damage, ownerTeam, DamageType.Bullet);
                 damageable.TakeDamage(damageInfo);
                 //Destroy(gameObject); //removed because bullet pooling is used below here
+
+                if(gameObject){
+                    BulletPool.Instance.ReturnBullet(gameObject);
+                }
             }
         }
 
-        if (other.CompareTag("Enemy"))
+
+        if (gameObject &&  other.CompareTag("Enemy"))
         {
             BulletPool.Instance.ReturnBullet(gameObject);
         }
-
 
     }
 }

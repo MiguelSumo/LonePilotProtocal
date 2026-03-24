@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Asteroid : MonoBehaviour
+public class Asteroid : MonoBehaviour, IDamageable
 {
     private SpriteRenderer _spriteRenderer;
     private float _speed;
@@ -13,6 +13,11 @@ public class Asteroid : MonoBehaviour
     private float _despawnPadding = 5f;
     [SerializeField] private int asteroidDamage = 5;
     [SerializeField] private Team ownerTeam;
+
+    public Team Team => Team.Asteroid;
+    [SerializeField] private GameObject asteriodExplosionPrefab;
+    [SerializeField] private IntEventChannelSO scoreEvent;
+
 
 
     void Awake() => _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -61,8 +66,30 @@ public class Asteroid : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
-            var damageInfo = new DamageInfo(asteroidDamage, Team.Enemy, DamageType.Asteroid);
+            if (damageable.Team == Team.Asteroid) return; // asteriod shouldn't damage other asteriods
+            var damageInfo = new DamageInfo(asteroidDamage, Team.Asteroid, DamageType.Asteroid);
             damageable.TakeDamage(damageInfo);
         }
+    }
+
+
+
+    public void TakeDamage(DamageInfo damageInfo)
+    {
+        switch (damageInfo.Type)
+        {
+            case DamageType.Bullet:
+                DestroyAsteroid();
+                break;
+        }
+    }
+
+
+    private void DestroyAsteroid()
+    {
+        Instantiate(asteriodExplosionPrefab, transform.position, Quaternion.identity);
+
+        _pool.ReturnToPool(this);
+        scoreEvent.RaiseEvent(GameScoreValues.AsteroidDestroyedScore);
     }
 }

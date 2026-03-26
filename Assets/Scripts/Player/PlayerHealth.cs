@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
@@ -22,10 +23,21 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         currentHealth = Mathf.Clamp(currentHealth - damageInfo.Amount, 0f, maxHealth);
         NotifyHealthChanged();
+        if(currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     private void NotifyHealthChanged()
     {
         healthChangedEvent.RaiseEvent(currentHealth, maxHealth);
     }
+
+
+    private void Die()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
 }

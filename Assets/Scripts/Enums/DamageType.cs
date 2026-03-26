@@ -1,5 +1,6 @@
 public enum DamageType
 {
     Bullet,
-    Asteroid
+    Asteroid,
+    Enemy
 }

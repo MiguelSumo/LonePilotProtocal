@@ -172,5 +172,15 @@ public class Enemy : MonoBehaviour, IDamageable
         public Animator animator;
 
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
+        {
+            if (damageable.Team == Team.Enemy) return; // asteriod shouldn't damage other asteriods
+            var damageInfo = new DamageInfo(GameScoreValues.EnemyDamageScore, Team.Enemy, DamageType.Enemy);
+            damageable.TakeDamage(damageInfo);
+        }
+    }
     
 }

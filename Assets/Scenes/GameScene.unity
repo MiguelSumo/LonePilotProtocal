@@ -1519,6 +1519,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Custom_Medium_4A_Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3405809335600991157, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4282195010652838263, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.12250663

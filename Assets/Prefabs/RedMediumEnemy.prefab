@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 557866517996469157}
   - component: {fileID: 532271331158256136}
   m_Layer: 0
-  m_Name: Custom_Medium_4A_Enemy
+  m_Name: RedMediumEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35714a52fc5099d48b4de71edcd6d2ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 10
   attackRange: 2
   trackingType: 1
   killScore: 20

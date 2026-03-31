@@ -4,37 +4,45 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform player = GameManager.Instance.Player;
-    public GameObject enemyPrefab; // drag your enemy prefab here
+    // 1. Declare the variable without assigning it here
+    public Transform player;
+    public GameObject enemyPrefab;
     public float spawnDistance = 5f;
-    public float spawnInterval; // seconds
+    public float spawnInterval;
 
     private float timer = 0f;
 
+    void Start()
+    {
+        // 2. Assign the reference here, once the game has started
+        if (player == null && GameManager.Instance != null)
+        {
+            player = GameManager.Instance.Player;
+        }
+    }
+
     void Update()
     {
-        timer += Time.deltaTime; // add time since last frame
+        // 3. Add a "null check" just in case the player isn't found yet
+        if (player == null) return;
+
+        timer += Time.deltaTime;
 
         if (timer >= spawnInterval)
         {
             SpawnEnemy();
-            timer = 0f; // reset timer
+            timer = 0f;
         }
     }
 
-
-
-    
     void SpawnEnemy()
     {
         Debug.Log("Spawning enemy...");
         Vector2 randomDir = Random.insideUnitCircle.normalized;
         Vector2 offset = randomDir * spawnDistance;
         Vector3 spawnPos = player.position + (Vector3)offset;
-        spawnPos.z = 0f; // important for 2D
+        spawnPos.z = 0f;
 
         Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
     }
-    
 }
-

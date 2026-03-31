@@ -801,11 +801,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2692558787303471503, guid: e1cae763f6836ee459584cb7caa1f79b, type: 3}
       propertyPath: m_text
-      value: Solo Pilot Protocol
+      value: Lone Pilot Protocol
       objectReference: {fileID: 0}
     - target: {fileID: 2692558787303471503, guid: e1cae763f6836ee459584cb7caa1f79b, type: 3}
       propertyPath: m_fontSize
-      value: 29.4
+      value: 28.75
       objectReference: {fileID: 0}
     - target: {fileID: 2692558787303471503, guid: e1cae763f6836ee459584cb7caa1f79b, type: 3}
       propertyPath: m_fontAsset

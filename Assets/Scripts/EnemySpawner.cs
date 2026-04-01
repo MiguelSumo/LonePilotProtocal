@@ -5,24 +5,22 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     // 1. Declare the variable without assigning it here
-    public Transform player;
+    private Transform player;
     public GameObject enemyPrefab;
     public float spawnDistance = 5f;
     public float spawnInterval;
-
     private float timer = 0f;
 
-    void Start()
+
+    private void Update()
     {
-        // 2. Assign the reference here, once the game has started
-        if (player == null && GameManager.Instance != null)
+
+        if (player == null && GameManager.Instance.Player != null)
         {
             player = GameManager.Instance.Player;
+            Debug.Log("Spawner Player found");
         }
-    }
 
-    void Update()
-    {
         // 3. Add a "null check" just in case the player isn't found yet
         if (player == null) return;
 
@@ -33,6 +31,7 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
             timer = 0f;
         }
+
     }
 
     void SpawnEnemy()

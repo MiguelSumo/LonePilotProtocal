@@ -19,13 +19,13 @@ public class BulletPool : MonoBehaviour
         Instance = this;
 
         _pool = new ObjectPool<GameObject>(
-            createFunc:      () => Instantiate(bulletPrefab, transform),
-            actionOnGet:     bullet => bullet.SetActive(true),
+            createFunc: () => Instantiate(bulletPrefab, transform),
+            actionOnGet: bullet => bullet.SetActive(true),
             actionOnRelease: bullet => bullet.SetActive(false),
             actionOnDestroy: bullet => Destroy(bullet),
             collectionCheck: true,   // warns you in editor if you return a bullet twice
             defaultCapacity: defaultCapacity,
-            maxSize:         maxSize
+            maxSize: maxSize
         );
     }
 
@@ -38,6 +38,11 @@ public class BulletPool : MonoBehaviour
 
     public void ReturnBullet(GameObject bullet)
     {
+        if (!bullet.activeSelf)
+        {
+            return;
+        }
+
         _pool.Release(bullet);
     }
 }

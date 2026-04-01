@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1436719713107208997}
   - component: {fileID: 410140145896572121}
   - component: {fileID: 4119895217501719964}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Orange Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

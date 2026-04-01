@@ -44,24 +44,24 @@ public class Bullet : MonoBehaviour
 
         if (other.TryGetComponent<IDamageable>(out var damageable))
         {
-        
+
             if (damageable.Team != ownerTeam)
             {
                 var damageInfo = new DamageInfo(damage, ownerTeam, DamageType.Bullet);
                 damageable.TakeDamage(damageInfo);
-                //Destroy(gameObject); //removed because bullet pooling is used below here
-                
-                ///if(gameObject){
-                   /// BulletPool.Instance.ReturnBullet(gameObject);
-                //}
             }
         }
 
 
         if (other.CompareTag("Enemy"))
         {
+            Debug.Log("Here returned to Pool");
             BulletPool.Instance.ReturnBullet(gameObject);
         }
+
+        //returning the object to the pool
+        BulletPool.Instance.ReturnBullet(gameObject);
+
 
     }
 }

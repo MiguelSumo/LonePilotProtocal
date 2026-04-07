@@ -10,7 +10,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private float maxHealth = 100f;
     public Team Team => Team.Player;
 
-
     private float currentHealth;
 
     private void Start()
@@ -23,10 +22,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         currentHealth = Mathf.Clamp(currentHealth - damageInfo.Amount, 0f, maxHealth);
         NotifyHealthChanged();
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    public void Heal(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
+        NotifyHealthChanged();
     }
 
     private void NotifyHealthChanged()
@@ -34,10 +39,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         healthChangedEvent.RaiseEvent(currentHealth, maxHealth);
     }
 
-
     private void Die()
     {
-        SceneManager.LoadScene("Main Menu");
+        SingleGameManager.Instance.GameOver();
     }
-
 }

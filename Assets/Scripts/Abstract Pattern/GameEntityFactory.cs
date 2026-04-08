@@ -12,7 +12,6 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
 
     [Header("Pools")]
     [SerializeField] private AsteroidPool asteroidPool;
-    // [SerializeField] private BulletPool bulletPool;
 
     public void CreateAsteroid(Vector3 position, Vector3 direction)
     {
@@ -33,10 +32,8 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
     }
 
 
-
-    // public void CreateBullet(Vector3 position, Quaternion rotation)
-    // {
-    //     BulletPool.Instance.GetBullet(position, rotation);
-    //   //  return bulletPool.GetBullet(position, rotation);
-    // }
+    public void CreateBullet(Vector3 position, Quaternion rotation)
+    {
+        BulletPool.Instance.GetBullet(position, rotation);
+    }
 }

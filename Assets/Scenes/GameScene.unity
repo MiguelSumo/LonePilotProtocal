@@ -275,6 +275,7 @@ MonoBehaviour:
   pool: {fileID: 424334688}
   spawnInterval: 1.5
   spawnDistance: 12
+  factory: {fileID: 817201121}
 --- !u!4 &424334687
 Transform:
   m_ObjectHideFlags: 0
@@ -579,6 +580,66 @@ RectTransform:
   m_AnchoredPosition: {x: 125, y: -113}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &817201120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 817201122}
+  - component: {fileID: 817201121}
+  m_Layer: 0
+  m_Name: GameFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &817201121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817201120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c801165a6b05a456b90904004a7cd2eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 6239578792939862987, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
+  rockSprites:
+  - {fileID: 21300000, guid: 4d92a98787288904fb8224f4a1850b89, type: 3}
+  - {fileID: 21300000, guid: 8326fc0ec0fb47745aaea35c0fc0c4db, type: 3}
+  - {fileID: 21300000, guid: 1eaf01ffaf81fb348940c51df9048475, type: 3}
+  - {fileID: 21300000, guid: 7c986eded4614454399423d42ba793eb, type: 3}
+  - {fileID: 21300000, guid: d66992af21fa0e845b53177303fbfbd9, type: 3}
+  - {fileID: 21300000, guid: 938df1295b912524fb379e8a6177b4d5, type: 3}
+  - {fileID: 21300000, guid: 8249a234b95470544ad586da6cd6d22f, type: 3}
+  - {fileID: 21300000, guid: 06313f5d91732da41878b180b5b96b7b, type: 3}
+  - {fileID: 21300000, guid: 638c6a3edf2e7ad489cf24e088b4a0f4, type: 3}
+  - {fileID: 21300000, guid: c0c2bd7f87d3ea845ab41fcbcc811982, type: 3}
+  - {fileID: 21300000, guid: 13baf7e437778dc48b509bd37f2c942f, type: 3}
+  - {fileID: 21300000, guid: 4ebca8c50f759bb4daa2f113fddd53b7, type: 3}
+  - {fileID: 21300000, guid: 185864c180eb94944b283373eff16772, type: 3}
+  asteroidPool: {fileID: 424334688}
+--- !u!4 &817201122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817201120}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.523705, y: -1.1203395, z: -1.2092266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &853069220
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405809335600991157, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4282195010652838263, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1005,7 +1066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1483215425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,10 +1079,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4442efc020618be4f844407ca7e1dcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1639678534}
   enemyPrefab: {fileID: 3405809335600991157, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
   spawnDistance: 20
   spawnInterval: 5
+  factory: {fileID: 817201121}
 --- !u!4 &1483215426
 Transform:
   m_ObjectHideFlags: 0
@@ -1573,7 +1634,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3405809335600991157, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4282195010652838263, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1838,3 +1899,4 @@ SceneRoots:
   - {fileID: 1272872929}
   - {fileID: 2083516056}
   - {fileID: 1483215426}
+  - {fileID: 817201122}

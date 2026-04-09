@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   asteroidDamage: 5
-  ownerTeam: 0
+  ownerTeam: 2
   asteriodExplosionPrefab: {fileID: 6338461000021949850, guid: b80511474a0c449ba859668a24a81ad0, type: 3}
   scoreEvent: {fileID: 11400000, guid: 6f750f624b511494ead87e4159f52001, type: 2}
 --- !u!58 &8911432080678130658

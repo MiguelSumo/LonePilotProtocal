@@ -12,6 +12,8 @@ public class ShipController : MonoBehaviour
     private float nextFireTime;
 
     private IMovementStrategy _currentStrategy;
+    [SerializeField] private GameEntityFactory factory;
+
 
     void Start()
     {
@@ -30,7 +32,8 @@ public class ShipController : MonoBehaviour
         if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
         {
             nextFireTime = Time.time + fireRate;
-            BulletPool.Instance.GetBullet(firePoint.position, firePoint.rotation);
+            //BulletPool.Instance.GetBullet(firePoint.position, firePoint.rotation);
+            factory.CreateBullet(firePoint.position, firePoint.rotation);
         }
     }
 

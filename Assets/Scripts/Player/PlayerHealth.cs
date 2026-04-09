@@ -27,6 +27,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             Die();
         }
+
+         switch (damageInfo.Type)
+        {
+            case DamageType.Enemy:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.enemyAttackSound);
+                break;
+
+            case DamageType.Asteroid:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.asteriodHitSound);
+                break;
+        }
     }
 
     private void NotifyHealthChanged()
@@ -37,6 +48,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        //Diesound
         SceneManager.LoadScene("Main Menu");
     }
 

@@ -20,6 +20,7 @@ public class AsteroidExplosion : MonoBehaviour
 
     private IEnumerator Explode()
     {
+        AudioManager.Instance.PlaySound(AudioManager.Instance.asteriodExplosion);
         float time = 0f;
         Color startColor = sr.color;
         Vector3 startScale = Vector3.one;

@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed = 7f;
+    public float defaultMoveSpeed { get; private set; }
 
     [Header("Shooting")]
     [SerializeField] public Transform firePoint;
-    [SerializeField] public float fireRate = 0.15f;
+    public float fireRate = 0.15f;
+    public float defaultFireRate { get; private set; }
     private float nextFireTime;
 
+    public bool IsShielded { get; set; }
+    public bool IsInvincible { get; set; }
+
     private IMovementStrategy _currentStrategy;
+    private IPlayerState _currentState;
 
     void Start()
     {
-        // Initialize with the WASD + Mouse Aiming strategy
+        defaultMoveSpeed = moveSpeed;
+        defaultFireRate = fireRate;
+
         _currentStrategy = new HybridMovementStrategy();
+        SetState(new NormalState());
     }
 
     void Update()
     {
-        // Execute the strategy
         _currentStrategy?.Move(transform, moveSpeed);
+        _currentState?.UpdateState(this);
         HandleShooting();
     }
+
     private void HandleShooting()
     {
         if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
@@ -37,5 +48,12 @@ public class ShipController : MonoBehaviour
     public void SetStrategy(IMovementStrategy strategy)
     {
         _currentStrategy = strategy;
+    }
+
+    public void SetState(IPlayerState newState)
+    {
+        _currentState?.ExitState(this);
+        _currentState = newState;
+        _currentState.EnterState(this);
     }
 }

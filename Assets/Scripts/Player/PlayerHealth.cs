@@ -20,6 +20,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageInfo damageInfo)
     {
+        ShipController ship = GetComponent<ShipController>();
+
+        if (ship != null && ship.IsInvincible) return;
+
+        if (ship != null && ship.IsShielded)
+        {
+            ship.SetState(new NormalState());
+            return;
+        }
+
         currentHealth = Mathf.Clamp(currentHealth - damageInfo.Amount, 0f, maxHealth);
         NotifyHealthChanged();
         if (currentHealth <= 0)

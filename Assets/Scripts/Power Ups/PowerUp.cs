@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public abstract class PowerUp : MonoBehaviour
 {
     public event Action OnCollected;
 
     [Header("Power Up Settings")]
-    public float duration = 0f; // 0 means permanent (like health)
+    public float duration = 0f;
 
     public abstract void Collect(GameObject player);
     protected virtual void ApplyEffect(GameObject player) { }
@@ -22,16 +21,18 @@ public abstract class PowerUp : MonoBehaviour
             OnCollected?.Invoke();
 
             if (duration > 0f)
-                StartCoroutine(EffectTimer(other.gameObject));
-            else
-                Destroy(gameObject);
+            {
+                GameObject player = other.gameObject;
+                player.GetComponent<MonoBehaviour>().StartCoroutine(EffectTimer(player));
+            }
+
+            Destroy(gameObject);
         }
     }
 
-    private System.Collections.IEnumerator EffectTimer(GameObject player)
+    private IEnumerator EffectTimer(GameObject player)
     {
         ApplyEffect(player);
-        Destroy(gameObject);
         yield return new WaitForSeconds(duration);
         RemoveEffect(player);
     }

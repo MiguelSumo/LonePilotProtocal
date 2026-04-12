@@ -7,8 +7,8 @@ public class ShipController : MonoBehaviour
     public float moveSpeed = 7f;
 
     [Header("Shooting")]
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireRate = 0.15f;
+    [SerializeField] public Transform firePoint;
+    [SerializeField] public float fireRate = 0.15f;
     private float nextFireTime;
 
     private IMovementStrategy _currentStrategy;

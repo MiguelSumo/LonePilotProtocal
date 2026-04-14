@@ -31,12 +31,20 @@ public class SingleGameManager : MonoBehaviour
     // Use this for any button that opens a specific menu (Shop, Settings, etc.)
     public void OpenPanel(GameObject panelToOpen)
     {
-        if (panelToOpen != null && menuContainer != null)
+        if (panelToOpen == null)
+        {
+            return;
+        }
+
+        CloseAllPanels();
+
+        if (panelToOpen != menuContainer && menuContainer != null)
         {
             menuContainer.SetActive(false);
-            panelToOpen.SetActive(true);
-            Debug.Log("Switched to " + panelToOpen.name);
         }
+
+        panelToOpen.SetActive(true);
+        Debug.Log("Switched to " + panelToOpen.name);
     }
 
     // Use this for ALL "Back" or "X" buttons to return to the Main Menu

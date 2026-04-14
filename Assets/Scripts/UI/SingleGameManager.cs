@@ -50,10 +50,7 @@ public class SingleGameManager : MonoBehaviour
     // Use this for ALL "Back" or "X" buttons to return to the Main Menu
     public void ReturnToMainMenu()
     {
-        if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (shopContainer != null) shopContainer.SetActive(false);
-
-        if (menuContainer != null) menuContainer.SetActive(true);
+        CloseAllPanels();
         Debug.Log("Returning to Main Menu.");
     }
 

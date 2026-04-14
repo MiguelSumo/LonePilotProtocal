@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDistance = 5f;
     public float spawnInterval;
     private float timer = 0f;
-    // [SerializeField] private GameEntityFactory factory;
+    //[SerializeField] private GameEntityFactory factory;
 
 
 

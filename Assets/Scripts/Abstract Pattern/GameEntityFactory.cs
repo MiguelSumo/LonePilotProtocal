@@ -12,7 +12,9 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
 
     [Header("Pools")]
     [SerializeField] private AsteroidPool asteroidPool;
-    public EnemyFactory enemyFactory;
+    
+    
+    private EnemyFactory enemyFactory;
 
 
     public void CreateAsteroid(Vector3 position, Vector3 direction)

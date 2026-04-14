@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 557866517996469157}
   - component: {fileID: 8647062508552369875}
   m_Layer: 0
-  m_Name: Custom_Medium_4A_Enemy (1)
+  m_Name: RedEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

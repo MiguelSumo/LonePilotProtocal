@@ -1,16 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; 
 
 public class SingleGameManager : MonoBehaviour
 {
     public static SingleGameManager Instance { get; private set; }
-
-    [Header("UI Panels")]
-    [SerializeField] private GameObject menuContainer;
-    [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject shopContainer; // Drag ShopContainer here
 
     private void Awake()
     {
@@ -21,51 +16,36 @@ public class SingleGameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        // Standardized Reset
-        CloseAllPanels();
     }
 
-    // --- Universal Navigation ---
-
-    // Use this for any button that opens a specific menu (Shop, Settings, etc.)
-    public void OpenPanel(GameObject panelToOpen)
-    {
-        if (panelToOpen != null && menuContainer != null)
-        {
-            menuContainer.SetActive(false);
-            panelToOpen.SetActive(true);
-            Debug.Log("Switched to " + panelToOpen.name);
-        }
-    }
-
-    // Use this for ALL "Back" or "X" buttons to return to the Main Menu
-    public void ReturnToMainMenu()
-    {
-        if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (shopContainer != null) shopContainer.SetActive(false);
-
-        if (menuContainer != null) menuContainer.SetActive(true);
-        Debug.Log("Returning to Main Menu.");
-    }
-
-    private void CloseAllPanels()
-    {
-        if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (shopContainer != null) shopContainer.SetActive(false);
-        if (menuContainer != null) menuContainer.SetActive(true);
-    }
-
-    // --- Scene Actions ---
+    // --- Title Screen Functions ---
 
     public void StartGame()
     {
         Debug.Log("Starting Solo Pilot Protocol...");
+        // Replace "GameScene" with the actual name of your play level
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void OpenShop()
+    {
+        Debug.Log("Opening Shop...");
+        // You could load a Shop scene or just enable a Shop UI Panel
+    }
+
+    public void OpenSettings()
+    {
+        Debug.Log("Opening Settings...");
     }
 
     public void QuitGame()
     {
+        Debug.Log("Quitting Game...");
         Application.Quit();
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }

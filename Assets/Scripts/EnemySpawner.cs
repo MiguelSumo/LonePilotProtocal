@@ -4,37 +4,53 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    // 1. Declare the variable without assigning it here
+    // Variables 
     private Transform player;
     public GameObject enemyPrefab;
     public float spawnDistance = 5f;
     public float spawnInterval;
     private float timer = 0f;
+    //[SerializeField] private GameEntityFactory factory;
 
 
-    private void Update()
+
+    // Enemy Factory Reference
+    public EnemyFactory factory;
+
+    public void SpawnEnemies(WaveManager waveManager, int enemiesPerWave)
     {
+        Debug.Log("SpawnEnemies CALLED: " + enemiesPerWave);
 
-        if (player == null && GameManager.Instance.Player != null)
+        if (player == null)
         {
             player = GameManager.Instance.Player;
-            Debug.Log("Spawner Player found");
         }
 
-        // 3. Add a "null check" just in case the player isn't found yet
-        if (player == null) return;
-
-        timer += Time.deltaTime;
-
-        if (timer >= spawnInterval)
+        if (player == null)
         {
-            SpawnEnemy();
-            timer = 0f;
+            Debug.LogError("PLAYER IS NULL");
+            return;
         }
 
+        for (int i = 0; i < enemiesPerWave; i++)
+        {
+            SpawnEnemy(waveManager);
+        }
     }
 
-    void SpawnEnemy()
+
+    EnemyType GetRandomEnemyType()
+    {
+        int rand = Random.Range(0, 100);
+
+        if (rand < 40) return EnemyType.BasicBlue;
+        if (rand < 70) return EnemyType.BasicRed;
+        if (rand < 90) return EnemyType.ZigZagBlue;
+
+        return EnemyType.ZigZagRed;
+    }
+
+    void SpawnEnemy(WaveManager waveManager)
     {
         Debug.Log("Spawning enemy...");
         Vector2 randomDir = Random.insideUnitCircle.normalized;
@@ -42,6 +58,9 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPos = player.position + (Vector3)offset;
         spawnPos.z = 0f;
 
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        EnemyType type = GetRandomEnemyType();
+        factory.CreateEnemy(type, spawnPos, waveManager);
+        //Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        //factory.CreateEnemy(spawnPos);
     }
 }

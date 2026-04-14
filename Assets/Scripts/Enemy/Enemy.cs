@@ -20,14 +20,18 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField]
     private TrackingType trackingType;
 
-    // 
+    // -- Damage Fields --
     [SerializeField] private int killScore = GameScoreValues.EnemyKillScore;
     [SerializeField] private int damageScore = GameScoreValues.EnemyDamageScore;
     [SerializeField] private IntEventChannelSO scoreEvent;
     public Team Team => Team.Enemy;
+
+    //Death Variables
     [SerializeField] GameObject deathParticlePrefab;
     bool isDead = false;
 
+    //Wave manager local reference
+    private WaveManager waveManager;
 
 
 
@@ -56,10 +60,9 @@ public class Enemy : MonoBehaviour, IDamageable
         currentState.Enter(this);
     }
 
-    public ITrackingStrategy GetTrackingStrategy()
-    {
-        return trackingStrategy;
-    }
+   
+
+    // Ensures enemy is always facing the player
 
     public void FaceTarget()
     {
@@ -72,23 +75,32 @@ public class Enemy : MonoBehaviour, IDamageable
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
+
+    // RigidBody 
     public Rigidbody2D RB { get; private set; }
 
     void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
     }
 
+    //Animation 
+    public Animator animator;
 
-    //Handle setting the tracking strategy
+
+    // Tracking Strategy Methods
+
+    public ITrackingStrategy GetTrackingStrategy()
+    {
+        return trackingStrategy;
+    }
 
     public enum TrackingType
     {
         Simple,
         ZigZag,
-        Predictive
+        //Predictive
     }
     private ITrackingStrategy CreateStrategy(TrackingType type)
     {
@@ -100,8 +112,8 @@ public class Enemy : MonoBehaviour, IDamageable
             case TrackingType.ZigZag:
                 return new ZigzagTracking();
 
-            case TrackingType.Predictive:
-                return new PredictiveTracking();
+           // case TrackingType.Predictive:
+            //    return new PredictiveTracking();
 
             default:
                 return new SimpleTracking();
@@ -109,6 +121,15 @@ public class Enemy : MonoBehaviour, IDamageable
         }
 
     }
+
+    public void SetTrackingType(TrackingType type)
+    {
+        trackingType = type;
+        trackingStrategy = CreateStrategy(trackingType);
+    }
+
+    // Damage and Death Methods
+
 
     public void TakeDamage(DamageInfo damageInfo)
     {
@@ -158,6 +179,8 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         isDead = true;
 
+        waveManager.OnEnemyDied(this); // Updates Wave Manager
+
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<Collider2D>().enabled = false;
 
@@ -166,10 +189,6 @@ public class Enemy : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    
-
-        //Animation 
-        public Animator animator;
 
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -182,5 +201,16 @@ public class Enemy : MonoBehaviour, IDamageable
             damageable.TakeDamage(damageInfo);
         }
     }
-    
+
+
+    // Allow Wave Manager to Reference Enemy
+
+
+
+    public void Initialize(WaveManager manager)
+    {
+        waveManager = manager;
+        manager.RegisterEnemy(this); 
+    }
+
 }

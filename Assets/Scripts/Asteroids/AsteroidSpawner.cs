@@ -7,6 +7,8 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] private AsteroidPool pool;
     public float spawnInterval = 1.5f;
     public float spawnDistance = 12f; // Added a variable for easy adjustment
+    [SerializeField] private GameEntityFactory factory;
+
 
     void Start() => InvokeRepeating(nameof(SpawnFromRandomAngle), 0f, spawnInterval);
 
@@ -35,7 +37,8 @@ public class AsteroidSpawner : MonoBehaviour
 
         if (pool != null)
         {
-            pool.GetAsteroid(spawnPos, direction);
+           //pool.GetAsteroid(spawnPos, direction);
+            factory.CreateAsteroid(spawnPos, direction);
         }
     }
 

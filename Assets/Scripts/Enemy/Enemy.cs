@@ -119,6 +119,7 @@ public class Enemy : MonoBehaviour, IDamageable
         switch (damageInfo.Type)
         {
             case DamageType.Bullet:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.enemyHitSound);
                 BulletDamage(damageInfo);
                 break;
 
@@ -156,6 +157,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Die(DamageInfo damageInfo)
     {
+        AudioManager.Instance.PlaySound(AudioManager.Instance.enemyDeath);
         isDead = true;
 
         GetComponent<SpriteRenderer>().enabled = false;
@@ -177,7 +179,7 @@ public class Enemy : MonoBehaviour, IDamageable
         
         if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
-            if (damageable.Team == Team.Enemy) return; // asteriod shouldn't damage other asteriods
+            if (damageable.Team == Team.Enemy) return; // enemy shouldn't damage other enemies
             var damageInfo = new DamageInfo(GameScoreValues.EnemyDamageScore, Team.Enemy, DamageType.Enemy);
             damageable.TakeDamage(damageInfo);
         }

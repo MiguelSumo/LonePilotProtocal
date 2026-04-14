@@ -36,6 +36,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             Die();
         }
+
+         switch (damageInfo.Type)
+        {
+            case DamageType.Enemy:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.enemyAttackSound);
+                break;
+
+            case DamageType.Asteroid:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.asteriodHitSound);
+                break;
+        }
     }
 
     public void Heal(float amount)
@@ -51,6 +62,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        SingleGameManager.Instance.GameOver();
+        //Diesound
+        SceneManager.LoadScene("Main Menu");
     }
 }

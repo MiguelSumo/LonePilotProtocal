@@ -18,7 +18,8 @@ public class ShipController : MonoBehaviour
     public bool IsInvincible { get; set; }
 
     private IMovementStrategy _currentStrategy;
-    private IPlayerState _currentState;
+    [SerializeField] private GameEntityFactory factory;
+
 
     void Start()
     {
@@ -41,7 +42,8 @@ public class ShipController : MonoBehaviour
         if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
         {
             nextFireTime = Time.time + fireRate;
-            BulletPool.Instance.GetBullet(firePoint.position, firePoint.rotation);
+            //BulletPool.Instance.GetBullet(firePoint.position, firePoint.rotation);
+            factory.CreateBullet(firePoint.position, firePoint.rotation);
         }
     }
 

@@ -10,6 +10,8 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDistance = 5f;
     public float spawnInterval;
     private float timer = 0f;
+    [SerializeField] private GameEntityFactory factory;
+
 
 
     private void Update()
@@ -42,6 +44,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPos = player.position + (Vector3)offset;
         spawnPos.z = 0f;
 
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        //Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        factory.CreateEnemy(spawnPos);
     }
 }

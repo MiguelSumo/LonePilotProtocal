@@ -18,6 +18,7 @@ public class ShipController : MonoBehaviour
     public bool IsInvincible { get; set; }
 
     private IMovementStrategy _currentStrategy;
+    private IPlayerState _currentState; // add this
     [SerializeField] private GameEntityFactory factory;
 
 

@@ -915,7 +915,7 @@ MonoBehaviour:
   pool: {fileID: 424334688}
   spawnInterval: 1.5
   spawnDistance: 12
-  factory: {fileID: 817201121}
+  factory: {fileID: 0}
 --- !u!4 &424334687
 Transform:
   m_ObjectHideFlags: 0
@@ -1229,7 +1229,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 611015321}
-  - component: {fileID: 611015322}
   m_Layer: 0
   m_Name: Boss_Spawn
   m_TagString: Untagged
@@ -1283,9 +1282,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPrefab: {fileID: 4033275240152762009, guid: e5fa1fa19c5ed4891aec44d8dcc8e427, type: 3}
   speedPrefab: {fileID: 4033275240152762009, guid: 7065d2bf729224858b59036f4995e370, type: 3}
-  shieldPrefab: {fileID: 0}
-  rapidFirePrefab: {fileID: 0}
-  invincibilityPrefab: {fileID: 0}
+  shieldPrefab: {fileID: 4033275240152762009, guid: 6268e2753f9c340dcacd10652a0a1441, type: 3}
+  rapidFirePrefab: {fileID: 4033275240152762009, guid: a264175ba56a8453fa23d91d6dbf4fe8, type: 3}
+  invincibilityPrefab: {fileID: 4033275240152762009, guid: 9a39b3f67117d46f2b20e99ef98cd232, type: 3}
 --- !u!4 &952410371
 Transform:
   m_ObjectHideFlags: 0
@@ -1331,7 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   factory: {fileID: 952410370}
-  spawnInterval: 20
+  spawnInterval: 1
   maxActivePickups: 10
   spawnAreaSize: {x: 1, y: 1}
 --- !u!4 &958203139
@@ -1380,7 +1379,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 853069222}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1125783025
 MonoBehaviour:
@@ -1975,7 +1974,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 3405809335600991157, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
   spawnDistance: 20
   spawnInterval: 5
-  factory: {fileID: 817201121}
+  factory: {fileID: 0}
 --- !u!4 &1483215426
 Transform:
   m_ObjectHideFlags: 0
@@ -2443,7 +2442,7 @@ MonoBehaviour:
   moveSpeed: 10
   firePoint: {fileID: 1281642866}
   fireRate: 0.15
-  factory: {fileID: 817201121}
+  factory: {fileID: 0}
 --- !u!58 &1639678536
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3061,19 +3060,13 @@ Transform:
   - {fileID: 1619953436}
   - {fileID: 415198213}
   - {fileID: 1173898167}
-  - {fileID: 932942527}
   - {fileID: 1594157482}
-  - {fileID: 1089715505}
   - {fileID: 1935683134}
   - {fileID: 147588977}
   - {fileID: 1988967588}
-  - {fileID: 1104043485}
-  - {fileID: 787130284}
   - {fileID: 611015321}
   - {fileID: 1172198732}
   - {fileID: 300926111}
-  - {fileID: 1108935261}
-  - {fileID: 755604396}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2027263504
@@ -3095,8 +3088,8 @@ MonoBehaviour:
   enemyHitSound: {fileID: 147588978}
   asteriodExplosion: {fileID: 1173898168}
   bulletSound: {fileID: 0}
-  pauseSound: {fileID: 1104043486}
-  unPauseSound: {fileID: 787130285}
+  pauseSound: {fileID: 0}
+  unPauseSound: {fileID: 0}
 --- !u!1001 &2083516056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3367,7 +3360,6 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 1639678534}
   - {fileID: 424334687}
-  - {fileID: 853069222}
   - {fileID: 158734879}
   - {fileID: 1758946285}
   - {fileID: 2015776576}
@@ -3378,3 +3370,5 @@ SceneRoots:
   - {fileID: 1483215426}
   - {fileID: 958203139}
   - {fileID: 952410371}
+  - {fileID: 1125783024}
+  - {fileID: 2027263503}

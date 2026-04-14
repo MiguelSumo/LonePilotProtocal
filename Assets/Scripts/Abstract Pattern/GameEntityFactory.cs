@@ -12,6 +12,8 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
 
     [Header("Pools")]
     [SerializeField] private AsteroidPool asteroidPool;
+    public EnemyFactory enemyFactory;
+
 
     public void CreateAsteroid(Vector3 position, Vector3 direction)
     {
@@ -26,9 +28,12 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
         //return asteroid;
     }
 
-    public void CreateEnemy(Vector3 position)
+    public void CreateEnemy(EnemyType type, Vector3 spawnPos, WaveManager waveManager)
     {
-        Instantiate(enemyPrefab, position, Quaternion.identity);
+        //  factory.CreateEnemy(type, spawnPos, waveManager);
+
+        enemyFactory.CreateEnemy(type, spawnPos, waveManager);
+        //Instantiate(enemyPrefab, position, Quaternion.identity);
     }
 
 
@@ -36,4 +41,6 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
     {
         BulletPool.Instance.GetBullet(position, rotation);
     }
+
+
 }

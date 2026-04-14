@@ -20,12 +20,18 @@ public class SingleGameManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         // Standardized Reset
         CloseAllPanels();
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
     // --- Universal Navigation ---
 
     // Use this for any button that opens a specific menu (Shop, Settings, etc.)

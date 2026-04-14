@@ -8,6 +8,10 @@ public class EnemySpawner : MonoBehaviour
     private Transform player;
     public GameObject enemyPrefab;
     public float spawnDistance = 5f;
+    public float spawnInterval;
+    private float timer = 0f;
+    [SerializeField] private GameEntityFactory factory;
+
 
     // Enemy Factory Reference
     public EnemyFactory factory;
@@ -55,5 +59,7 @@ public class EnemySpawner : MonoBehaviour
 
         EnemyType type = GetRandomEnemyType();
         factory.CreateEnemy(type, spawnPos, waveManager);
+        //Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        factory.CreateEnemy(spawnPos);
     }
 }

@@ -43,4 +43,9 @@ public class SingleGameManager : MonoBehaviour
         Debug.Log("Quitting Game...");
         Application.Quit();
     }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
 }

@@ -3145,7 +3145,7 @@ MonoBehaviour:
   ice: {fileID: 1173898168}
   enemyDeath: {fileID: 191621080}
   enemyAttackSound: {fileID: 1988967589}
-  asteriodHitSound: {fileID: 0}
+  asteriodHitSound: {fileID: 1935683135}
   enemyHitSound: {fileID: 147588978}
   asteriodExplosion: {fileID: 1173898168}
   bulletSound: {fileID: 0}

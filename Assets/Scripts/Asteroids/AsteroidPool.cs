@@ -20,16 +20,26 @@ public class AsteroidPool : MonoBehaviour
         }
     }
 
-    public void GetAsteroid(Vector3 position, Vector3 direction)
+    // public void GetAsteroid(Vector3 position, Vector3 direction)
+    // {
+    //     Asteroid asteroid = (_pool.Count > 0) ? _pool.Dequeue() : Instantiate(asteroidPrefab, transform);
+
+    //     Sprite randomRock = rockSprites[Random.Range(0, rockSprites.Length)];
+    //     float speed = Random.Range(3f, 6f);
+
+    //     asteroid.transform.position = position;
+    //     // Fix for Error 1: Passing 'this' as the pool argument
+    //     asteroid.Initialize(randomRock, speed, direction, this);
+    // }
+
+    public Asteroid GetAsteroidFromPool()
     {
-        Asteroid asteroid = (_pool.Count > 0) ? _pool.Dequeue() : Instantiate(asteroidPrefab, transform);
+        Asteroid asteroid = (_pool.Count > 0)
+            ? _pool.Dequeue()
+            : Instantiate(asteroidPrefab, transform);
 
-        Sprite randomRock = rockSprites[Random.Range(0, rockSprites.Length)];
-        float speed = Random.Range(3f, 6f);
-
-        asteroid.transform.position = position;
-        // Fix for Error 1: Passing 'this' as the pool argument
-        asteroid.Initialize(randomRock, speed, direction, this);
+        asteroid.gameObject.SetActive(true);
+        return asteroid;
     }
 
     public void ReturnToPool(Asteroid asteroid)

@@ -26,11 +26,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         if (ship != null && ship.IsShielded)
         {
+            Debug.Log("Shield is active, taking hit");
             ShieldVisual shieldVisual = ship.GetComponentInChildren<ShieldVisual>();
             if (shieldVisual != null)
             {
+                Debug.Log("ShieldVisual found, playing animations");
                 shieldVisual.OnShieldHit();
                 shieldVisual.OnShieldBroken();
+            }
+            else
+            {
+                Debug.Log("ShieldVisual NOT found");
             }
             ship.SetState(new NormalState());
             return;

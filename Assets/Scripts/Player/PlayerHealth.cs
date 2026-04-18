@@ -26,6 +26,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         if (ship != null && ship.IsShielded)
         {
+            ShieldVisual shieldVisual = ship.GetComponentInChildren<ShieldVisual>();
+            if (shieldVisual != null)
+            {
+                shieldVisual.OnShieldHit();
+                shieldVisual.OnShieldBroken();
+            }
             ship.SetState(new NormalState());
             return;
         }

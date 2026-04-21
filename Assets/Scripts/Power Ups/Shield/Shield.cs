@@ -9,19 +9,14 @@ public class Shield : PowerUp
 
     public override void Collect(GameObject player)
     {
-        _shipController = player.GetComponent<ShipController>();
-        _shieldVisual = player.GetComponentInChildren<ShieldVisual>();
+        ShipController shipController = player.GetComponent<ShipController>();
+        ShieldVisual shieldVisual = player.GetComponentInChildren<ShieldVisual>();
+
+        if (shipController != null)
+            shipController.SetState(new ShieldState(shieldVisual));
     }
 
-    protected override void ApplyEffect(GameObject player)
-    {
-        if (_shipController != null)
-            _shipController.SetState(new ShieldState(_shieldVisual));
-    }
+    protected override void ApplyEffect(GameObject player) { }
+    protected override void RemoveEffect(GameObject player) { }
 
-    protected override void RemoveEffect(GameObject player)
-    {
-        if (_shipController != null)
-            _shipController.SetState(new NormalState());
-    }
 }

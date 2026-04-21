@@ -30,19 +30,36 @@ public class ShieldState : IPlayerState
         ship.IsShielded = false;
     }
 
-    public void AbsorbHit(ShipController ship, float damage)
+    /* public void AbsorbHit(ShipController ship, float damage)
     {
         _shieldHP -= damage;
         _shieldVisual.OnShieldHit();
 
-        // Check if shield just went low
         if (!_isLow && _shieldHP <= _maxShieldHP * LowThreshold)
         {
             _isLow = true;
             _shieldVisual.SetShieldLow(true);
         }
 
-        // Shield is broken
+        if (_shieldHP <= 0f)
+        {
+            _shieldVisual.OnShieldBroken();
+            ship.SetState(new NormalState());
+        }
+    } */
+    public void AbsorbHit(ShipController ship, float damage)
+    {
+        _shieldHP -= damage;
+        Debug.Log("Shield HP: " + _shieldHP + " Max: " + _maxShieldHP + " Threshold: " + (_maxShieldHP * LowThreshold));
+        _shieldVisual.OnShieldHit();
+
+        if (!_isLow && _shieldHP <= _maxShieldHP * LowThreshold)
+        {
+            _isLow = true;
+            Debug.Log("Shield is low, setting cracked");
+            _shieldVisual.SetShieldLow(true);
+        }
+
         if (_shieldHP <= 0f)
         {
             _shieldVisual.OnShieldBroken();

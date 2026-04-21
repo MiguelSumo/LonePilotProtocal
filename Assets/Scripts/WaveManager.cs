@@ -5,10 +5,12 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
     //Variables
-    public int currentWave = 1;
+    public int currentWave = 0;
     
     [SerializeField]private int enemiesPerWave = 5;
     [SerializeField] private float timeBetweenWaves = 15.0f;
+    [SerializeField] private IntEventChannelSO waveEvent;
+
 
     private List<Enemy> aliveEnemies = new List<Enemy>();
 
@@ -35,9 +37,10 @@ public class WaveManager : MonoBehaviour
     }
 
     public void StartWave()
-    {
-        currentWave++;
+    {  
+        currentWave +=1;
         Debug.Log($"Starting Wave {currentWave}");
+        waveEvent.RaiseEvent(currentWave);
 
         spawner.SpawnEnemies(this, enemiesPerWave); // pass mediator
     }

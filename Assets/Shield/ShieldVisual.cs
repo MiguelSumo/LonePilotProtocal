@@ -21,6 +21,8 @@ public class ShieldVisual : MonoBehaviour
     public void ActivateShield()
     {
         _renderer.enabled = true;
+        _animator.Rebind();
+        _animator.Update(0f);
         _animator.SetBool(ShieldActive, true);
     }
 

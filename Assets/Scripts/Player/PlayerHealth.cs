@@ -26,9 +26,31 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         if (ship != null && ship.IsShielded)
         {
-            ship.SetState(new NormalState());
+            Debug.Log("Shield block reached");
+            ShieldState shieldState = ship.GetCurrentState() as ShieldState;
+            if (shieldState != null)
+            {
+                Debug.Log("ShieldState found, absorbing hit");
+                shieldState.AbsorbHit(ship, damageInfo.Amount);
+            }
+            else
+            {
+                Debug.Log("ShieldState cast failed, current state is: " + ship.GetCurrentState()?.GetType().Name);
+            }
             return;
         }
+        else
+        {
+            Debug.Log("Shield block NOT reached, IsShielded: " + ship?.IsShielded);
+        }
+
+        /* if (ship != null && ship.IsShielded)
+        {
+            ShieldState shieldState = ship.GetCurrentState() as ShieldState;
+            if (shieldState != null)
+                shieldState.AbsorbHit(ship, damageInfo.Amount);
+            return;
+        } */
 
         currentHealth = Mathf.Clamp(currentHealth - damageInfo.Amount, 0f, maxHealth);
         NotifyHealthChanged();

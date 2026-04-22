@@ -59,4 +59,9 @@ public class ShipController : MonoBehaviour
         _currentState = newState;
         _currentState.EnterState(this);
     }
+
+    public IPlayerState GetCurrentState()
+    {
+        return _currentState;
+    }
 }

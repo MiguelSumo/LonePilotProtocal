@@ -22,12 +22,21 @@ public class SingleGameManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        // This manager holds scene UI references, so it must remain scene-scoped.
+        // Persisting it across scene loads would leave stale references behind.
 
         // Ensure we start fresh
         CloseAllPanels();
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
     // --- Universal Navigation ---
 
     // Pass the specific panel (Shop, Settings, etc.) via the Unity Inspector Button

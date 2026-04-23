@@ -3,31 +3,24 @@ using UnityEngine;
 
 public class UIScoreController : MonoBehaviour
 {
+    [SerializeField] private IntEventChannelSO scoreEvent;
     [SerializeField] private TMP_Text scoreText;
+
+    private int displayedScore;
 
     private void OnEnable()
     {
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.OnScoreChanged += UpdateScoreUI;
-
-            // immediate sync when panel becomes active
-            UpdateScoreUI(ScoreManager.Instance.GetScore());
-        }
+        scoreEvent.OnEventRaised += UpdateScoreUI;
     }
 
     private void OnDisable()
     {
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.OnScoreChanged -= UpdateScoreUI;
-        }
+        scoreEvent.OnEventRaised -= UpdateScoreUI;
     }
 
-    private void UpdateScoreUI(int totalScore)
+    private void UpdateScoreUI(int amount)
     {
-        if (scoreText == null) return;
-
-        scoreText.text = $"Score: {totalScore}";
+        displayedScore += amount;
+        scoreText.text = $"Score: {displayedScore}";
     }
 }

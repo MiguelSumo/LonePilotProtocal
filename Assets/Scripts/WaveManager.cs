@@ -38,9 +38,10 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave()
     {  
+        currentWave +=1;
         Debug.Log($"Starting Wave {currentWave}");
         waveEvent.RaiseEvent(currentWave);
-        currentWave +=1;
+
         spawner.SpawnEnemies(this, enemiesPerWave); // pass mediator
     }
 

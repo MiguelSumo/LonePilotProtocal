@@ -5,22 +5,23 @@ using UnityEngine;
 
 public class Shield : PowerUp
 {
-    private ShipController shipController;
+    private ShipController _shipController;
+    private ShieldVisual _shieldVisual;
+
 
     public override void Collect(GameObject player)
     {
-        shipController = player.GetComponent<ShipController>();
+        ShipController shipController = player.GetComponent<ShipController>();
+        ShieldVisual shieldVisual = player.GetComponentInChildren<ShieldVisual>();
+
+
+        if (shipController != null)
+            shipController.SetState(new ShieldState(shieldVisual));
     }
 
-    protected override void ApplyEffect(GameObject player)
-    {
-        if (shipController != null)
-            shipController.SetState(new ShieldState());
-    }
 
-    protected override void RemoveEffect(GameObject player)
-    {
-        if (shipController != null)
-            shipController.SetState(new NormalState());
-    }
+    protected override void ApplyEffect(GameObject player) { }
+    protected override void RemoveEffect(GameObject player) { }
+
+
 }

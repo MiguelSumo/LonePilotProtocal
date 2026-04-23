@@ -2,21 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Shield : PowerUp
 {
-    private ShipController _shipController;
-    private ShieldVisual _shieldVisual;
+    private ShipController shipController;
 
     public override void Collect(GameObject player)
     {
-        ShipController shipController = player.GetComponent<ShipController>();
-        ShieldVisual shieldVisual = player.GetComponentInChildren<ShieldVisual>();
-
-        if (shipController != null)
-            shipController.SetState(new ShieldState(shieldVisual));
+        shipController = player.GetComponent<ShipController>();
     }
 
-    protected override void ApplyEffect(GameObject player) { }
-    protected override void RemoveEffect(GameObject player) { }
+    protected override void ApplyEffect(GameObject player)
+    {
+        if (shipController != null)
+            shipController.SetState(new ShieldState());
+    }
 
+    protected override void RemoveEffect(GameObject player)
+    {
+        if (shipController != null)
+            shipController.SetState(new NormalState());
+    }
 }

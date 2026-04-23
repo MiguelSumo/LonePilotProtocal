@@ -4,9 +4,23 @@ using UnityEngine;
 
 public class ShieldState : IPlayerState
 {
+    private ShieldVisual _shieldVisual;
+    private float _shieldHP;
+    private float _maxShieldHP;
+    private const float LowThreshold = 0.3f;
+    private bool _isLow = false;
+
+    public ShieldState(ShieldVisual shieldVisual, float shieldHP = 50f)
+    {
+        _shieldVisual = shieldVisual;
+        _shieldHP = shieldHP;
+        _maxShieldHP = shieldHP;
+    }
+
     public void EnterState(ShipController ship)
     {
         ship.IsShielded = true;
+        _shieldVisual.ActivateShield();
     }
 
     public void UpdateState(ShipController ship) { }
@@ -14,5 +28,42 @@ public class ShieldState : IPlayerState
     public void ExitState(ShipController ship)
     {
         ship.IsShielded = false;
+    }
+
+    /* public void AbsorbHit(ShipController ship, float damage)
+    {
+        _shieldHP -= damage;
+        _shieldVisual.OnShieldHit();
+
+        if (!_isLow && _shieldHP <= _maxShieldHP * LowThreshold)
+        {
+            _isLow = true;
+            _shieldVisual.SetShieldLow(true);
+        }
+
+        if (_shieldHP <= 0f)
+        {
+            _shieldVisual.OnShieldBroken();
+            ship.SetState(new NormalState());
+        }
+    } */
+    public void AbsorbHit(ShipController ship, float damage)
+    {
+        _shieldHP -= damage;
+        Debug.Log("Shield HP: " + _shieldHP + " Max: " + _maxShieldHP + " Threshold: " + (_maxShieldHP * LowThreshold));
+        _shieldVisual.OnShieldHit();
+
+        if (!_isLow && _shieldHP <= _maxShieldHP * LowThreshold)
+        {
+            _isLow = true;
+            Debug.Log("Shield is low, setting cracked");
+            _shieldVisual.SetShieldLow(true);
+        }
+
+        if (_shieldHP <= 0f)
+        {
+            _shieldVisual.OnShieldBroken();
+            ship.SetState(new NormalState());
+        }
     }
 }

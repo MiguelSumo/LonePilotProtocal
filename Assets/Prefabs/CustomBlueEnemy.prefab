@@ -287,7 +287,7 @@ MonoBehaviour:
   killScore: 20
   damageScore: 5
   scoreEvent: {fileID: 11400000, guid: 6f750f624b511494ead87e4159f52001, type: 2}
-  deathParticlePrefab: {fileID: 5034607418285310512, guid: 28b3deedbf46b1c4ba034001dcefa669, type: 3}
+  deathParticlePrefab: {fileID: 4807424810991611540, guid: 3cb7069a82168436fa43c1ed2c1cb44f, type: 3}
   animator: {fileID: 5167775956211559263}
 --- !u!95 &5167775956211559263
 Animator:

@@ -13,12 +13,11 @@ public class Shield : PowerUp
     {
         ShipController shipController = player.GetComponent<ShipController>();
         ShieldVisual shieldVisual = player.GetComponentInChildren<ShieldVisual>();
-
-
+        Debug.Log("ShipController: " + (shipController != null ? "found" : "NULL"));
+        Debug.Log("ShieldVisual: " + (shieldVisual != null ? "found" : "NULL"));
         if (shipController != null)
             shipController.SetState(new ShieldState(shieldVisual));
     }
-
 
     protected override void ApplyEffect(GameObject player) { }
     protected override void RemoveEffect(GameObject player) { }

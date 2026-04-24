@@ -21,7 +21,7 @@ public class RapidFire : PowerUp
 
     protected override void RemoveEffect(GameObject player)
     {
-        if (shipController != null)
+        if (shipController != null && shipController.GetCurrentState() is RapidFireState)
             shipController.SetState(new NormalState());
     }
 }

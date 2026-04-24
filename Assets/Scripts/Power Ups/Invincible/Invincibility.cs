@@ -20,7 +20,7 @@ public class Invincibility : PowerUp
 
     protected override void RemoveEffect(GameObject player)
     {
-        if (shipController != null)
+        if (shipController != null && shipController.GetCurrentState() is InvincibilityState)
             shipController.SetState(new NormalState());
     }
 }

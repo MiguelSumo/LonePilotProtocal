@@ -90,7 +90,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        //Diesound
+        // Check if the manager exists
+        if (SingleGameManager.Instance != null)
+        {
+            // Destroy the GameObject the manager is attached to
+            Destroy(SingleGameManager.Instance.gameObject);
+        }
+
+        // Load the Main Menu
+        // Note: Since the Manager is destroyed, a fresh one will 
+        // run its Awake() logic when this scene loads.
         SceneManager.LoadScene("Main Menu");
     }
 }

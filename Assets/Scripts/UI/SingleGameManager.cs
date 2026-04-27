@@ -91,4 +91,12 @@ public class SingleGameManager : MonoBehaviour
         Debug.Log("Quitting Application...");
         Application.Quit();
     }
+    private void OnDestroy()
+    {
+        // If THIS is the current instance being destroyed, clear the static reference
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -7,42 +5,40 @@ public class BulletPool : MonoBehaviour
 {
     public static BulletPool Instance { get; private set; }
 
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Bullet bulletPrefab; // Changed from GameObject to Bullet
     [SerializeField] private int defaultCapacity = 30;
     [SerializeField] private int maxSize = 100;
 
-    private ObjectPool<GameObject> _pool;
+    private ObjectPool<Bullet> _pool; // Changed from GameObject to Bullet
 
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        _pool = new ObjectPool<GameObject>(
+        _pool = new ObjectPool<Bullet>(
             createFunc: () => Instantiate(bulletPrefab, transform),
-            actionOnGet: bullet => bullet.SetActive(true),
-            actionOnRelease: bullet => bullet.SetActive(false),
-            actionOnDestroy: bullet => Destroy(bullet),
-            collectionCheck: true,   // warns you in editor if you return a bullet twice
+            actionOnGet: bullet => bullet.gameObject.SetActive(true),
+            actionOnRelease: bullet => bullet.gameObject.SetActive(false),
+            actionOnDestroy: bullet => Destroy(bullet.gameObject),
+            collectionCheck: true,
             defaultCapacity: defaultCapacity,
             maxSize: maxSize
         );
     }
 
-    public GameObject GetBullet(Vector3 position, Quaternion rotation)
+    // This now returns 'Bullet', matching what your Factory expects
+    public Bullet GetBullet(Vector3 position, Quaternion rotation)
     {
-        GameObject bullet = _pool.Get();
+        Bullet bullet = _pool.Get();
         bullet.transform.SetPositionAndRotation(position, rotation);
         return bullet;
     }
 
-    public void ReturnBullet(GameObject bullet)
+    // Update this to accept 'Bullet'
+    public void ReturnBullet(Bullet bullet)
     {
-        if (!bullet.activeSelf)
-        {
-            return;
-        }
-
+        if (!bullet.gameObject.activeSelf) return;
         _pool.Release(bullet);
     }
 }

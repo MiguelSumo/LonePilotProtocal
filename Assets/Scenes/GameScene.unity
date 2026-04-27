@@ -1966,7 +1966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &958203138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2668,6 +2668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c801165a6b05a456b90904004a7cd2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: 86832a5efbabbd540a9a66eeea1cd94a, type: 2}
   enemyPrefab: {fileID: 6239578792939862987, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
   rockSprites:
   - {fileID: 21300000, guid: 4d92a98787288904fb8224f4a1850b89, type: 3}
@@ -3173,7 +3174,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e783228c604ed34fbba3f957ec91be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  stats: {fileID: 11400000, guid: 86832a5efbabbd540a9a66eeea1cd94a, type: 2}
+  healthChangedEvent: {fileID: 11400000, guid: 032fe231148984eb0a273e060e8233be, type: 2}
+  moveSpeed: 7
   firePoint: {fileID: 1281642866}
   fireRate: 0.15
   factory: {fileID: 1568385402}
@@ -3951,7 +3954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a81c2b454c1380747834abb228670704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 4899622957631176699, guid: d61bdf9bfc6354a7ea877d7edab63e33, type: 3}
+  bulletPrefab: {fileID: 3346214326777790157, guid: d61bdf9bfc6354a7ea877d7edab63e33, type: 3}
   defaultCapacity: 30
   maxSize: 100
 --- !u!1 &2027263502

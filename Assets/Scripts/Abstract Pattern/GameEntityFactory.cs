@@ -2,20 +2,35 @@ using UnityEngine;
 
 public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
 {
+    [Header("Player Stats Integration")]
+    [SerializeField] private ShipStats_SO playerStats;
+
     [Header("Prefabs")]
     [SerializeField] private Enemy enemyPrefab;
-
-    // [SerializeField] private GameObject bulletPrefab;
 
     [Header("Asteroid Settings")]
     [SerializeField] private Sprite[] rockSprites;
 
     [Header("Pools")]
     [SerializeField] private AsteroidPool asteroidPool;
-    
-    
+
     private EnemyFactory enemyFactory;
 
+    /// <summary>
+    /// Creates a bullet and injects the current upgraded damage stat.
+    /// This is high-performance because it avoids GetComponent by pulling the script directly from the pool.
+    /// </summary>
+    public void CreateBullet(Vector3 position, Quaternion rotation)
+    {
+        // Pull the Bullet component directly from the Pool
+        Bullet bullet = BulletPool.Instance.GetBullet(position, rotation);
+
+        if (bullet != null && playerStats != null)
+        {
+            // Inject the damage value calculated from the ScriptableObject level
+            bullet.SetDamage(playerStats.damage.GetTotalValue());
+        }
+    }
 
     public void CreateAsteroid(Vector3 position, Vector3 direction)
     {
@@ -26,23 +41,23 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
 
         asteroid.transform.position = position;
         asteroid.Initialize(randomRock, speed, direction, asteroidPool);
-
-        //return asteroid;
     }
 
     public void CreateEnemy(EnemyType type, Vector3 spawnPos, WaveManager waveManager)
     {
-        //  factory.CreateEnemy(type, spawnPos, waveManager);
-
-        enemyFactory.CreateEnemy(type, spawnPos, waveManager);
-        //Instantiate(enemyPrefab, position, Quaternion.identity);
+        // Assuming enemyFactory is initialized via Awake or DI
+        if (enemyFactory != null)
+        {
+            enemyFactory.CreateEnemy(type, spawnPos, waveManager);
+        }
     }
 
-
-    public void CreateBullet(Vector3 position, Quaternion rotation)
+    // Optional: Call this from the ShipController to ensure player is synced with SO stats
+    public void InitializePlayer(ShipController player)
     {
-        BulletPool.Instance.GetBullet(position, rotation);
+        if (playerStats != null)
+        {
+            // Logic to sync player with the SO can go here if needed
+        }
     }
-
-
 }

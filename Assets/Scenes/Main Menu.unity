@@ -1164,6 +1164,9 @@ MonoBehaviour:
   pauseSound: {fileID: 0}
   unPauseSound: {fileID: 0}
   backgroundMusic: {fileID: 451843731}
+  masterVal: 1
+  musicVal: 1
+  sfxVal: 1
 --- !u!4 &996552422
 Transform:
   m_ObjectHideFlags: 0

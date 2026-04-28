@@ -22,6 +22,9 @@ public class ShipController : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] private GameEntityFactory factory;
+    [SerializeField] private GameObject gameplayUI;
+    [SerializeField] private GameObject pauseMenu; // Drag your Pause Menu Panel here in Inspector
+    private bool isPaused = false;
 
     public float CurrentHealth { get; private set; }
     public float MaxHealth { get; private set; }
@@ -53,9 +56,43 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
-        _currentStrategy?.Move(transform, moveSpeed);
-        _currentState?.UpdateState(this);
-        HandleShooting();
+        // Check for Pause Input
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TogglePause();
+        }
+
+        // Only run movement and shooting if NOT paused
+        if (!isPaused)
+        {
+            _currentStrategy?.Move(transform, moveSpeed);
+            _currentState?.UpdateState(this);
+            HandleShooting();
+        }
+    }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+            pauseMenu.SetActive(true);
+            gameplayUI.SetActive(false); // Hides Health Bar, etc.
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySound(AudioManager.Instance.pauseSound);
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            pauseMenu.SetActive(false);
+            gameplayUI.SetActive(true); // Shows Health Bar, etc.
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySound(AudioManager.Instance.unPauseSound);
+        }
     }
 
     private void HandleShooting()

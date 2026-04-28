@@ -64,6 +64,12 @@ public class ShipController : MonoBehaviour
         {
             nextFireTime = Time.time + fireRate;
             factory.CreateBullet(firePoint.position, firePoint.rotation);
+
+            // ADD THIS LINE:
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(AudioManager.Instance.bulletSound);
+            }
         }
     }
 

@@ -10,12 +10,12 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDistance = 5f;
     public float spawnInterval;
     private float timer = 0f;
-    //[SerializeField] private GameEntityFactory factory;
+    [SerializeField] private GameEntityFactory factory;
 
 
 
     // Enemy Factory Reference
-    public EnemyFactory factory;
+    // public EnemyFactory factory;
 
     public void SpawnEnemies(WaveManager waveManager, int enemiesPerWave)
     {

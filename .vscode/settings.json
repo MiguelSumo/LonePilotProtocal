@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "414-Group-Project.sln"
+    "dotnet.defaultSolution": "LonePilotProtocal.sln"
 }

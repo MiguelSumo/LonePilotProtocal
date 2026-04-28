@@ -14,7 +14,14 @@ public class GameEntityFactory : MonoBehaviour, IGameEntityFactory
     [Header("Pools")]
     [SerializeField] private AsteroidPool asteroidPool;
 
+    // private EnemyFactory enemyFactory;
     private EnemyFactory enemyFactory;
+
+    private void Awake()
+    {
+        enemyFactory = GetComponent<EnemyFactory>();
+    }
+
 
     /// <summary>
     /// Creates a bullet and injects the current upgraded damage stat.

@@ -1341,11 +1341,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 530f73ccb1114f2408a3ad372506d404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPrefab: {fileID: 0}
-  speedPrefab: {fileID: 0}
+  healthPrefab: {fileID: 4033275240152762009, guid: e5fa1fa19c5ed4891aec44d8dcc8e427, type: 3}
+  speedPrefab: {fileID: 4033275240152762009, guid: 7065d2bf729224858b59036f4995e370, type: 3}
   shieldPrefab: {fileID: 4033275240152762009, guid: 6268e2753f9c340dcacd10652a0a1441, type: 3}
-  rapidFirePrefab: {fileID: 0}
-  invincibilityPrefab: {fileID: 0}
+  rapidFirePrefab: {fileID: 4033275240152762009, guid: a264175ba56a8453fa23d91d6dbf4fe8, type: 3}
+  invincibilityPrefab: {fileID: 4033275240152762009, guid: 9a39b3f67117d46f2b20e99ef98cd232, type: 3}
 --- !u!4 &952410371
 Transform:
   m_ObjectHideFlags: 0
@@ -1391,9 +1391,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   factory: {fileID: 952410370}
-  spawnInterval: 1
+  dropChance: 25
   maxActivePickups: 10
-  spawnAreaSize: {x: 1, y: 1}
 --- !u!4 &958203139
 Transform:
   m_ObjectHideFlags: 0

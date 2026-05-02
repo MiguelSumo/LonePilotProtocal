@@ -1,51 +1,61 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUpSpawner : MonoBehaviour
 {
+    // Singleton instance so enemies can find it easily
+    public static PowerUpSpawner Instance { get; private set; }
+
     [Header("Dependencies")]
     [SerializeField] private PowerUpFactory factory;
 
-    [Header("Spawn Settings")]
-    [SerializeField] private float spawnInterval = 10f;
+    [Header("Drop Settings")]
+    [Range(0f, 100f)]
+    [SerializeField] private float dropChance = 25f; // 25% chance
     [SerializeField] private int maxActivePickups = 5;
-    [SerializeField] private Vector2 spawnAreaSize = new Vector2(20f, 20f);
 
     private int activePickups = 0;
-    private float timer = 0f;
 
-    private void Update()
+    private void Awake()
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
+        // Simple singleton setup for the spawner
+        if (Instance != null && Instance != this)
         {
-            timer = 0f;
-            TrySpawn();
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+    }
+
+    public void RequestPowerUpDrop(Vector3 spawnPosition)
+    {
+        // 1. Check if we've reached the maximum allowed on screen
+        if (activePickups >= maxActivePickups) return;
+
+        // 2. Roll the 25% chance
+        float roll = Random.Range(0f, 100f);
+        if (roll <= dropChance)
+        {
+            SpawnPowerUp(spawnPosition);
         }
     }
 
-    private void TrySpawn()
+    private void SpawnPowerUp(Vector3 position)
     {
-        if (activePickups >= maxActivePickups) return;
-
+        // Pick a random type from your Enum
         PowerUpType type = (PowerUpType)Random.Range(0, System.Enum.GetValues(typeof(PowerUpType)).Length);
-        Vector3 spawnPos = new Vector3(
-            transform.position.x + Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
-            transform.position.y + Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2),
-            0f
-        );
 
-        GameObject pickup = factory.CreatePowerUp(type, spawnPos);
-        if (pickup == null) return;
+        GameObject pickup = factory.CreatePowerUp(type, position);
 
-        activePickups++;
-        pickup.GetComponent<PowerUp>().OnCollected += () => activePickups--;
-    }
+        if (pickup != null)
+        {
+            activePickups++;
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(transform.position, new Vector3(spawnAreaSize.x, spawnAreaSize.y, 0f));
+            // Link to the collection event to free up a slot
+            PowerUp powerUpComponent = pickup.GetComponent<PowerUp>();
+            if (powerUpComponent != null)
+            {
+                powerUpComponent.OnCollected += () => activePickups--;
+            }
+        }
     }
 }

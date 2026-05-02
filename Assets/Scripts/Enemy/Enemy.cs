@@ -181,6 +181,13 @@ public class Enemy : MonoBehaviour, IDamageable
         AudioManager.Instance.PlaySound(AudioManager.Instance.enemyDeath);
         isDead = true;
 
+        // --- Added PowerUp Drop Logic ---
+        // This calls the spawner to run its 25% chance check
+        if (PowerUpSpawner.Instance != null)
+        {
+            PowerUpSpawner.Instance.RequestPowerUpDrop(transform.position);
+        }
+
         waveManager.OnEnemyDied(this); // Updates Wave Manager
 
         GetComponent<SpriteRenderer>().enabled = false;

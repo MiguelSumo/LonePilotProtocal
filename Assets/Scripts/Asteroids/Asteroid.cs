@@ -18,12 +18,14 @@ public class Asteroid : MonoBehaviour, IDamageable
     [SerializeField] private GameObject asteriodExplosionPrefab;
     [SerializeField] private IntEventChannelSO scoreEvent;
 
+    private bool _isDestroyed = false;
 
 
     void Awake() => _spriteRenderer = GetComponent<SpriteRenderer>();
 
     public void Initialize(Sprite rockSprite, float speed, Vector3 direction, AsteroidPool pool)
     {
+        _isDestroyed = false; // Reset here
         _spriteRenderer.sprite = rockSprite;
         _speed = speed;
         _direction = direction;
@@ -76,6 +78,8 @@ public class Asteroid : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageInfo damageInfo)
     {
+        if (_isDestroyed) return; // If already dead, ignore more damage
+
         switch (damageInfo.Type)
         {
             case DamageType.Bullet:
@@ -87,7 +91,15 @@ public class Asteroid : MonoBehaviour, IDamageable
 
     private void DestroyAsteroid()
     {
+        if (_isDestroyed) return; // Final check to prevent double-triggering
+        _isDestroyed = true;
+
         Instantiate(asteriodExplosionPrefab, transform.position, Quaternion.identity);
+
+        if (LootSpawner.Instance != null)
+        {
+            LootSpawner.Instance.DropLoot(transform.position);
+        }
 
         _pool.ReturnToPool(this);
         scoreEvent.RaiseEvent(GameScoreValues.AsteroidDestroyedScore);

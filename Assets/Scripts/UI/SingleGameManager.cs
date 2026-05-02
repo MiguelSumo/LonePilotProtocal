@@ -10,12 +10,14 @@ public class SingleGameManager : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject shopContainer;
 
-    // Track the currently open panel so we can close it automatically
+    [Header("Economy System")]
+    [SerializeField] private int totalCoins = 0;
+    public int TotalCoins => totalCoins;
+
     private GameObject _currentActivePanel;
 
     private void Awake()
     {
-        // --- Singleton Pattern ---
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -23,80 +25,67 @@ public class SingleGameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        // Ensure we start fresh
         CloseAllPanels();
     }
 
-    // --- Universal Navigation ---
+    // --- Economy Logic ---
 
-    // Pass the specific panel (Shop, Settings, etc.) via the Unity Inspector Button
+    public void AddCoins(int amount)
+    {
+        totalCoins += amount;
+        Debug.Log($"Coins Collected! New Balance: {totalCoins}");
+    }
+
+    public bool TrySpendCoins(int cost)
+    {
+        if (totalCoins >= cost)
+        {
+            totalCoins -= cost;
+            Debug.Log($"Spent {cost} coins. Remaining: {totalCoins}");
+            return true;
+        }
+
+        Debug.Log("Not enough coins!");
+        return false;
+    }
+
+    // --- Navigation Logic ---
+
     public void OpenPanel(GameObject panelToOpen)
     {
         if (panelToOpen != null && menuContainer != null)
         {
-            // Hide the main menu
             menuContainer.SetActive(false);
-
-            // Hide any other panel that might be open
             if (_currentActivePanel != null) _currentActivePanel.SetActive(false);
-
-            // Open the new panel and track it
             panelToOpen.SetActive(true);
             _currentActivePanel = panelToOpen;
-
-            Debug.Log($"Navigated to: {panelToOpen.name}");
         }
     }
 
-    // Use this for ALL "Back" or "X" buttons
     public void ReturnToMainMenu()
     {
-        // Close whatever is currently open
         if (_currentActivePanel != null)
         {
             _currentActivePanel.SetActive(false);
             _currentActivePanel = null;
         }
-
-        // Show the main menu
         if (menuContainer != null) menuContainer.SetActive(true);
-
-        Debug.Log("Returning to Main Menu.");
     }
 
     private void CloseAllPanels()
     {
         if (settingsPanel != null) settingsPanel.SetActive(false);
         if (shopContainer != null) shopContainer.SetActive(false);
-
-        // Reset our tracker
         _currentActivePanel = null;
-
-        // Ensure the main menu is the only thing visible
         if (menuContainer != null) menuContainer.SetActive(true);
     }
 
-    // --- Scene Actions ---
+    public void StartGame() => SceneManager.LoadScene("GameScene");
 
-    public void StartGame()
-    {
-        Debug.Log("Starting Solo Pilot Protocol...");
-        // Ensure "GameScene" is added to your Build Settings!
-        SceneManager.LoadScene("GameScene");
-    }
+    public void QuitGame() => Application.Quit();
 
-    public void QuitGame()
-    {
-        Debug.Log("Quitting Application...");
-        Application.Quit();
-    }
     private void OnDestroy()
     {
-        // If THIS is the current instance being destroyed, clear the static reference
-        if (Instance == this)
-        {
-            Instance = null;
-        }
+        if (Instance == this) Instance = null;
     }
 }

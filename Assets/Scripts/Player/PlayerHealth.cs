@@ -88,18 +88,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         healthChangedEvent.RaiseEvent(currentHealth, maxHealth);
     }
 
-    private void Die()
+    public void Die()
     {
-        // Check if the manager exists
+        // 1. Clean up the manager (this triggers OnDestroy in SingleGameManager)
         if (SingleGameManager.Instance != null)
         {
-            // Destroy the GameObject the manager is attached to
             Destroy(SingleGameManager.Instance.gameObject);
         }
 
-        // Load the Main Menu
-        // Note: Since the Manager is destroyed, a fresh one will 
-        // run its Awake() logic when this scene loads.
+        // 2. Unfreeze the game (just in case the settings menu was open)
+        Time.timeScale = 1f;
+
+        // 3. Go back to start
         SceneManager.LoadScene("Main Menu");
     }
 }

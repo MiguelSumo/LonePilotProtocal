@@ -7,9 +7,6 @@ public class ShipController : MonoBehaviour
     [Header("Stats System")]
     [SerializeField] private ShipStats_SO stats;
 
-    [Header("Events")]
-    [SerializeField] private HealthChangedEventChannelSO healthChangedEvent;
-
     [Header("Movement")]
     public float moveSpeed = 7f;
     public float defaultMoveSpeed { get; private set; }
@@ -23,11 +20,12 @@ public class ShipController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private GameEntityFactory factory;
     [SerializeField] private GameObject gameplayUI;
-    [SerializeField] private GameObject pauseMenu; // Drag your Pause Menu Panel here in Inspector
+    [SerializeField] private GameObject pauseMenu;
     private bool isPaused = false;
 
-    public float CurrentHealth { get; private set; }
-    public float MaxHealth { get; private set; }
+    // These link directly to PlayerHealth to ensure one source of truth
+    public float CurrentHealth => GetComponent<PlayerHealth>().GetCurrentHealth();
+    public float MaxHealth => GetComponent<PlayerHealth>().GetMaxHealth();
 
     public bool IsShielded { get; set; }
     public bool IsInvincible { get; set; }
@@ -37,18 +35,11 @@ public class ShipController : MonoBehaviour
 
     void Start()
     {
-        // 1. Pull the upgraded values from your ScriptableObject
+        // Pull movement values and trigger Health Sync in PlayerHealth
         RefreshStatsFromSO();
 
-        // 2. Set the 'default' anchors for power-ups
         defaultMoveSpeed = moveSpeed;
         defaultFireRate = fireRate;
-
-        // 3. Initialize Health
-        CurrentHealth = MaxHealth;
-
-        // 4. Tell the UI what the starting health is
-        StartCoroutine(InitialUISync());
 
         _currentStrategy = new HybridMovementStrategy();
         SetState(new NormalState());
@@ -56,13 +47,11 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
-        // Check for Pause Input
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePause();
         }
 
-        // Only run movement and shooting if NOT paused
         if (!isPaused)
         {
             _currentStrategy?.Move(transform, moveSpeed);
@@ -79,7 +68,7 @@ public class ShipController : MonoBehaviour
         {
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
-            gameplayUI.SetActive(false); // Hides Health Bar, etc.
+            gameplayUI.SetActive(false);
 
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySound(AudioManager.Instance.pauseSound);
@@ -88,7 +77,7 @@ public class ShipController : MonoBehaviour
         {
             Time.timeScale = 1f;
             pauseMenu.SetActive(false);
-            gameplayUI.SetActive(true); // Shows Health Bar, etc.
+            gameplayUI.SetActive(true);
 
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySound(AudioManager.Instance.unPauseSound);
@@ -102,7 +91,6 @@ public class ShipController : MonoBehaviour
             nextFireTime = Time.time + fireRate;
             factory.CreateBullet(firePoint.position, firePoint.rotation);
 
-            // ADD THIS LINE:
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySound(AudioManager.Instance.bulletSound);
@@ -110,52 +98,31 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float amount)
-    {
-        if (IsInvincible) return;
-
-        CurrentHealth -= amount;
-        NotifyHealthChanged();
-
-        if (CurrentHealth <= 0) Die();
-    }
-
-    // Call this from Start and from the Upgrade Shop
+    // Call this from the Upgrade Shop
     public void RefreshStatsFromSO()
     {
         if (stats != null)
         {
             moveSpeed = stats.speed.GetTotalValue();
-            MaxHealth = stats.health.GetTotalValue();
-            // If you want to heal the player to full on upgrade:
-            CurrentHealth = MaxHealth;
-            NotifyHealthChanged();
+            defaultMoveSpeed = moveSpeed;
+
+            // This triggers the SyncWithSO logic in PlayerHealth to keep stats in sync
+            PlayerHealth healthScript = GetComponent<PlayerHealth>();
+            if (healthScript != null)
+            {
+                healthScript.SyncWithSO();
+            }
         }
     }
-
-    private IEnumerator InitialUISync()
-    {
-        // Give the UI one frame to initialize its listeners
-        yield return new WaitForEndOfFrame();
-        NotifyHealthChanged();
-    }
-
-    private void NotifyHealthChanged()
-    {
-        if (healthChangedEvent != null)
-        {
-            healthChangedEvent.RaiseEvent(CurrentHealth, MaxHealth);
-        }
-    }
-
-    private void Die() => Debug.Log("Player has died.");
 
     public void SetStrategy(IMovementStrategy strategy) => _currentStrategy = strategy;
+
     public void SetState(IPlayerState newState)
     {
         _currentState?.ExitState(this);
         _currentState = newState;
         _currentState.EnterState(this);
     }
+
     public IPlayerState GetCurrentState() => _currentState;
 }

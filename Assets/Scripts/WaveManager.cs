@@ -1,25 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro; // Needed for the timer text
 
 public class WaveManager : MonoBehaviour
 {
-    //Variables
+    [Header("Wave Settings")]
     public int currentWave = 0;
-    public static float EnemyHealthMultiplier = 1f;
-    public static float EnemyDamageMultiplier = 1f;
-
-
-
-    private int enemiesPerWave;
-    [SerializeField] private float timeBetweenWaves = 15.0f;
+    [SerializeField] private float timeBetweenWaves = 20.0f;
+    [SerializeField] private float endWaveBuffer = 4.0f;
     [SerializeField] private IntEventChannelSO waveEvent;
 
+    [Header("UI References")]
+    [SerializeField] private TextMeshProUGUI shopTimerText; // Drag your Timer Text here
+
+    [Header("References")]
+    public EnemySpawner spawner;
 
     private List<Enemy> aliveEnemies = new List<Enemy>();
-
-
-    public EnemySpawner spawner;
 
     void Start()
     {
@@ -28,55 +26,79 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator StartFirstWave()
     {
-        // Wait until player exists in the scene
-        while (GameManager.Instance.Player == null)
-        {
-            yield return null;
-        }
-
-        // Optional: small delay so everything loads cleanly
+        while (GameManager.Instance.Player == null) yield return null;
         yield return new WaitForSeconds(2f);
-
         StartWave();
     }
 
     public void StartWave()
     {
-        enemiesPerWave = Mathf.Min(2 + (currentWave / 2), 12);
-        Debug.Log($"Starting Wave {currentWave}");
-        waveEvent.RaiseEvent(currentWave);
+        Time.timeScale = 1f;
+        if (GameManager.Instance != null) GameManager.Instance.HideShop();
+
+        int enemiesPerWave = Mathf.Min(2 + (currentWave / 2), 12);
+        if (waveEvent != null) waveEvent.RaiseEvent(currentWave);
+
         EnemyDamageMultiplier = 1f + (currentWave * 0.13f);
         EnemyHealthMultiplier = 1f + (currentWave * 0.05f);
-        currentWave +=1;
-        spawner.SpawnEnemies(this, enemiesPerWave); // pass mediator
+        currentWave += 1;
+
+        if (spawner != null) spawner.SpawnEnemies(this, enemiesPerWave);
+    }
+
+    public void SkipShopTimer()
+    {
+        StopAllCoroutines();
+        StartWave();
     }
 
     private void EndWave()
     {
-        Debug.Log($"Wave {currentWave} Complete");
-
-        Invoke(nameof(StartWave), timeBetweenWaves);
+        StartCoroutine(WaveTransitionSequence());
     }
 
-    // -------------------
-    // MEDIATOR METHODS
-    // -------------------
+    private IEnumerator WaveTransitionSequence()
+    {
+        yield return new WaitForSecondsRealtime(endWaveBuffer);
+        Time.timeScale = 0f;
+        if (GameManager.Instance != null) GameManager.Instance.ShowShop();
+
+        // Start the countdown
+        StartCoroutine(ShopTimerCoroutine());
+    }
+
+    private IEnumerator ShopTimerCoroutine()
+    {
+        float timeRemaining = timeBetweenWaves;
+
+        while (timeRemaining > 0)
+        {
+            if (shopTimerText != null)
+            {
+                // Rounds to a whole number for a clean look
+                shopTimerText.text = $"NEXT WAVE IN: {Mathf.CeilToInt(timeRemaining)}s";
+            }
+
+            // Must use Realtime because Time.timeScale is 0!
+            yield return new WaitForSecondsRealtime(1f);
+            timeRemaining -= 1f;
+        }
+
+        StartWave();
+    }
+
+    // --- Mediator Methods ---
+    public static float EnemyHealthMultiplier = 1f;
+    public static float EnemyDamageMultiplier = 1f;
 
     public void RegisterEnemy(Enemy enemy)
     {
-        aliveEnemies.Add(enemy);
+        if (!aliveEnemies.Contains(enemy)) aliveEnemies.Add(enemy);
     }
 
     public void OnEnemyDied(Enemy enemy)
     {
-        aliveEnemies.Remove(enemy);
-
-        if (aliveEnemies.Count <= 0)
-        {
-            EndWave();
-        }
+        if (aliveEnemies.Contains(enemy)) aliveEnemies.Remove(enemy);
+        if (aliveEnemies.Count <= 0) EndWave();
     }
-
-
-
 }

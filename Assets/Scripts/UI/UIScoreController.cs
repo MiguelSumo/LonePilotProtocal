@@ -28,6 +28,6 @@ public class UIScoreController : MonoBehaviour
     {
         if (scoreText == null) return;
 
-        scoreText.text = $"Score: {totalScore}";
+        scoreText.text = $"Points: {totalScore}";
     }
 }

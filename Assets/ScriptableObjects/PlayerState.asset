@@ -13,14 +13,20 @@ MonoBehaviour:
   m_Name: PlayerState
   m_EditorClassIdentifier: 
   damage:
-    baseValue: 5
-    valuePerLevel: 1
-    currentLevel: 0
+    BaseValue: 2
+    ValuePerLevel: 1
+    CurrentLevel: 3
+    BaseCost: 100
+    CostPerLevel: 50
   health:
-    baseValue: 100
-    valuePerLevel: 2
-    currentLevel: 0
+    BaseValue: 100
+    ValuePerLevel: 5
+    CurrentLevel: 3
+    BaseCost: 150
+    CostPerLevel: 50
   speed:
-    baseValue: 8
-    valuePerLevel: 1
-    currentLevel: 0
+    BaseValue: 5
+    ValuePerLevel: 1
+    CurrentLevel: 0
+    BaseCost: 100
+    CostPerLevel: 50

@@ -7,14 +7,50 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private HealthChangedEventChannelSO healthChangedEvent;
 
     [Header("Health Settings")]
-    [SerializeField] private float maxHealth = 100f;
-    public Team Team => Team.Player;
+    [SerializeField] private ShipStats_SO playerStats;
 
+    private float maxHealth;
     private float currentHealth;
 
-    private void Start()
+    public Team Team => Team.Player;
+
+    private void Awake()
     {
-        currentHealth = maxHealth;
+        // Initialize health before anything else happens
+        SyncWithSO();
+    }
+
+    /// <summary>
+    /// Updates the health limit based on the ScriptableObject.
+    /// Ensures only the bonus health is added to the current pool.
+    /// </summary>
+    public void SyncWithSO()
+    {
+        if (playerStats == null) return;
+
+        float upgradedMax = playerStats.health.GetTotalValue();
+
+        // Safety: ensure max health is at least at a base level
+        if (upgradedMax <= 0) upgradedMax = 100f;
+
+        if (maxHealth > 0)
+        {
+            // Calculate the bonus gain (e.g., if max went from 100 to 110, diff is 10)
+            float healthIncrease = upgradedMax - maxHealth;
+
+            maxHealth = upgradedMax;
+
+            // Only add the extra capacity you bought
+            currentHealth += healthIncrease;
+        }
+        else
+        {
+            // Initial setup on game start
+            maxHealth = upgradedMax;
+            currentHealth = maxHealth;
+        }
+
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         NotifyHealthChanged();
     }
 
@@ -22,59 +58,29 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         ShipController ship = GetComponent<ShipController>();
 
-
         if (ship != null && ship.IsInvincible) return;
 
-
+        // Shield Handling
         if (ship != null && ship.IsShielded)
         {
-            Debug.Log("Shield block reached");
             ShieldState shieldState = ship.GetCurrentState() as ShieldState;
             if (shieldState != null)
             {
-                Debug.Log("ShieldState found, absorbing hit");
                 shieldState.AbsorbHit(ship, damageInfo.Amount);
-            }
-            else
-            {
-                Debug.Log("ShieldState cast failed, current state is: " + ship.GetCurrentState()?.GetType().Name);
             }
             return;
         }
-        else
-        {
-            Debug.Log("Shield block NOT reached, IsShielded: " + ship?.IsShielded);
-        }
 
-
-        /* if (ship != null && ship.IsShielded)
-        {
-            ShieldState shieldState = ship.GetCurrentState() as ShieldState;
-            if (shieldState != null)
-                shieldState.AbsorbHit(ship, damageInfo.Amount);
-            return;
-        } */
-
-
+        // Subtract damage and clamp to current maxHealth
         currentHealth = Mathf.Clamp(currentHealth - damageInfo.Amount, 0f, maxHealth);
         NotifyHealthChanged();
+
         if (currentHealth <= 0)
         {
             Die();
         }
 
-
-        switch (damageInfo.Type)
-        {
-            case DamageType.Enemy:
-                AudioManager.Instance.PlaySound(AudioManager.Instance.enemyAttackSound);
-                break;
-
-
-            case DamageType.Asteroid:
-                AudioManager.Instance.PlaySound(AudioManager.Instance.asteriodHitSound);
-                break;
-        }
+        HandleDamageSFX(damageInfo);
     }
 
     public void Heal(float amount)
@@ -85,21 +91,53 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void NotifyHealthChanged()
     {
-        healthChangedEvent.RaiseEvent(currentHealth, maxHealth);
+        if (healthChangedEvent != null)
+            healthChangedEvent.RaiseEvent(currentHealth, maxHealth);
+    }
+
+    private void HandleDamageSFX(DamageInfo damageInfo)
+    {
+        if (AudioManager.Instance == null) return;
+
+        switch (damageInfo.Type)
+        {
+            case DamageType.Enemy:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.enemyAttackSound);
+                break;
+            case DamageType.Asteroid:
+                AudioManager.Instance.PlaySound(AudioManager.Instance.asteriodHitSound);
+                break;
+        }
     }
 
     public void Die()
     {
-        // 1. Clean up the manager (this triggers OnDestroy in SingleGameManager)
+        Debug.Log("Player Died: Resetting Progress.");
+
+        if (playerStats != null)
+        {
+            ResetVisitor resetter = new ResetVisitor();
+            playerStats.Accept(resetter, StatType.Damage);
+            playerStats.Accept(resetter, StatType.Health);
+            playerStats.Accept(resetter, StatType.Speed);
+
+            ShipController ship = GetComponent<ShipController>();
+            if (ship != null)
+            {
+                ship.RefreshStatsFromSO();
+            }
+        }
+
         if (SingleGameManager.Instance != null)
         {
             Destroy(SingleGameManager.Instance.gameObject);
         }
 
-        // 2. Unfreeze the game (just in case the settings menu was open)
         Time.timeScale = 1f;
-
-        // 3. Go back to start
         SceneManager.LoadScene("Main Menu");
     }
+
+    // These link the Health script back to the ShipController "Wrappers"
+    public float GetCurrentHealth() => currentHealth;
+    public float GetMaxHealth() => maxHealth;
 }

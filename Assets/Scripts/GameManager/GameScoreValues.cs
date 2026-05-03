@@ -7,7 +7,7 @@ public static class GameScoreValues
     // Enemy Health
     public const float EnemyHealthMax = 100f;
     public const int EnemyKillScore = 20;
-    public const int EnemyDamageScore = 5;
+    public const int EnemyDamageScore = 3;
 
 
     // asteriod score

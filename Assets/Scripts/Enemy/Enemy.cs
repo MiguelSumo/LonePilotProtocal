@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public float moveSpeed = 3.0f;
     public float attackRange = 1.5f;
 
+
     // --- Target ---
     public Transform Target { get; private set; }
 
@@ -24,6 +25,10 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private int killScore = GameScoreValues.EnemyKillScore;
     [SerializeField] private int damageScore = GameScoreValues.EnemyDamageScore;
     [SerializeField] private IntEventChannelSO scoreEvent;
+    [SerializeField] private float maxHealth = GameScoreValues.EnemyHealthMax;
+    private float currentHealth;
+
+
     public Team Team => Team.Enemy;
 
     //Death Variables
@@ -35,13 +40,14 @@ public class Enemy : MonoBehaviour, IDamageable
 
 
 
-    private float health = GameScoreValues.EnemyHealthMax;
 
     private void Start()
     {
         trackingStrategy = CreateStrategy(trackingType);
         // Start in Chase state
         ChangeState(new ChaseState());
+        maxHealth *= WaveManager.EnemyHealthMultiplier;
+        currentHealth = maxHealth;
     }
 
     private void Update()
@@ -134,7 +140,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public void TakeDamage(DamageInfo damageInfo)
     {
         if (isDead) return;
-        health -= damageInfo.Amount;
+        maxHealth -= damageInfo.Amount;
 
 
         switch (damageInfo.Type)
@@ -149,7 +155,7 @@ public class Enemy : MonoBehaviour, IDamageable
                 break;
         }
 
-        if (health <= 0f)
+        if (maxHealth <= 0f)
         {
             Die(damageInfo);
         }
@@ -158,13 +164,13 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void BulletDamage(DamageInfo damageInfo)
     {   //update player score if damages the enemy;
-        Debug.Log($"Bullet hit me {health}");
-        if (health > 0f)
+        Debug.Log($"Bullet hit me {maxHealth}");
+        if (maxHealth > 0f)
         {
             scoreEvent.RaiseEvent(damageScore); // damage score
         }
 
-        if (health <= 0f)
+        if (maxHealth <= 0f)
         {
             scoreEvent.RaiseEvent(killScore); // kill score 
         }
@@ -206,7 +212,13 @@ public class Enemy : MonoBehaviour, IDamageable
         if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
             if (damageable.Team == Team.Enemy) return; // enemy shouldn't damage other enemies
-            var damageInfo = new DamageInfo(GameScoreValues.EnemyDamageScore, Team.Enemy, DamageType.Enemy);
+            float scaledDamage = damageScore * WaveManager.EnemyDamageMultiplier;
+
+            var damageInfo = new DamageInfo(
+                Mathf.RoundToInt(scaledDamage),
+                Team.Enemy,
+                DamageType.Enemy);
+            
             damageable.TakeDamage(damageInfo);
         }
     }

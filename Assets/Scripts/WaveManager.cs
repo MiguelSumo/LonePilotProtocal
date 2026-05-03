@@ -59,7 +59,7 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator WaveTransitionSequence()
     {
-        yield return new WaitForSeconds(endWaveBuffer);
+        yield return new WaitForSecondsRealtime(endWaveBuffer);
         Time.timeScale = 0f;
         if (GameManager.Instance != null) GameManager.Instance.ShowShop();
 

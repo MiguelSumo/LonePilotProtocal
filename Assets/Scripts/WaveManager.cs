@@ -6,8 +6,12 @@ public class WaveManager : MonoBehaviour
 {
     //Variables
     public int currentWave = 0;
-    
-    [SerializeField]private int enemiesPerWave = 5;
+    public static float EnemyHealthMultiplier = 1f;
+    public static float EnemyDamageMultiplier = 1f;
+
+
+
+    private int enemiesPerWave;
     [SerializeField] private float timeBetweenWaves = 15.0f;
     [SerializeField] private IntEventChannelSO waveEvent;
 
@@ -37,9 +41,12 @@ public class WaveManager : MonoBehaviour
     }
 
     public void StartWave()
-    {  
+    {
+        enemiesPerWave = Mathf.Min(2 + (currentWave / 2), 12);
         Debug.Log($"Starting Wave {currentWave}");
         waveEvent.RaiseEvent(currentWave);
+        EnemyDamageMultiplier = 1f + (currentWave * 0.13f);
+        EnemyHealthMultiplier = 1f + (currentWave * 0.05f);
         currentWave +=1;
         spawner.SpawnEnemies(this, enemiesPerWave); // pass mediator
     }

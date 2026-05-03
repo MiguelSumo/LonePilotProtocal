@@ -197,12 +197,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35714a52fc5099d48b4de71edcd6d2ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 2
   attackRange: 2
   trackingType: 1
   killScore: 20
-  damageScore: 5
+  damageScore: 8
   scoreEvent: {fileID: 11400000, guid: 6f750f624b511494ead87e4159f52001, type: 2}
+  maxHealth: 100
   deathParticlePrefab: {fileID: 4488497955514287044, guid: d00e4160f783a1c4a86bf2d09dbc0a5c, type: 3}
   animator: {fileID: 6777684066227439800}
 --- !u!95 &6777684066227439800

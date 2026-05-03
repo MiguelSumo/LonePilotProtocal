@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8442925162034767015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5208817846996245334}
+  - component: {fileID: 5959565826620573798}
+  - component: {fileID: 5480213469010535521}
+  m_Layer: 0
+  m_Name: GameFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5208817846996245334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8442925162034767015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.523705, y: -1.1203395, z: -1.2092266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5959565826620573798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8442925162034767015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c801165a6b05a456b90904004a7cd2eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: 86832a5efbabbd540a9a66eeea1cd94a, type: 2}
+  enemyPrefab: {fileID: 6239578792939862987, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
+  rockSprites:
+  - {fileID: 21300000, guid: 4d92a98787288904fb8224f4a1850b89, type: 3}
+  - {fileID: 21300000, guid: 8326fc0ec0fb47745aaea35c0fc0c4db, type: 3}
+  - {fileID: 21300000, guid: 1eaf01ffaf81fb348940c51df9048475, type: 3}
+  - {fileID: 21300000, guid: 7c986eded4614454399423d42ba793eb, type: 3}
+  - {fileID: 21300000, guid: d66992af21fa0e845b53177303fbfbd9, type: 3}
+  - {fileID: 21300000, guid: 938df1295b912524fb379e8a6177b4d5, type: 3}
+  - {fileID: 21300000, guid: 8249a234b95470544ad586da6cd6d22f, type: 3}
+  - {fileID: 21300000, guid: 06313f5d91732da41878b180b5b96b7b, type: 3}
+  - {fileID: 21300000, guid: 638c6a3edf2e7ad489cf24e088b4a0f4, type: 3}
+  - {fileID: 21300000, guid: c0c2bd7f87d3ea845ab41fcbcc811982, type: 3}
+  - {fileID: 21300000, guid: 13baf7e437778dc48b509bd37f2c942f, type: 3}
+  - {fileID: 21300000, guid: 4ebca8c50f759bb4daa2f113fddd53b7, type: 3}
+  - {fileID: 21300000, guid: 185864c180eb94944b283373eff16772, type: 3}
+  asteroidPool: {fileID: 0}
+--- !u!114 &5480213469010535521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8442925162034767015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77109501bab56ee4eb24ea4cd320418e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlueEnemyPreFab: {fileID: 3256375267259713521, guid: 70dc2cfd3589f8d44bb31422aea2c35b, type: 3}
+  RedEnemyPreFab: {fileID: 6239578792939862987, guid: ec64ad46dbd0dc84da36e9d9b0be4aae, type: 3}
+  AbyssalTwoa: {fileID: 8697132714550072410, guid: 46b218655b4909d4696866310fe0ec7d, type: 3}
+  AbyssalSixc: {fileID: 8122812743574294922, guid: 3a7b020976299fa40960ca9ab2b70da0, type: 3}
+  AbyssalFiveb: {fileID: 3308858850002632233, guid: 7f4d0a6145bbf044b98ef2c47bc2438b, type: 3}
+  AbyssalThreec: {fileID: 8406052500961855984, guid: cefe948d832e08d4a8933c0504d5818b, type: 3}

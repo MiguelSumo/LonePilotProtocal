@@ -41,13 +41,8 @@ public class EnemySpawner : MonoBehaviour
 
     EnemyType GetRandomEnemyType()
     {
-        int rand = Random.Range(0, 100);
-
-        if (rand < 40) return EnemyType.BasicBlue;
-        if (rand < 70) return EnemyType.BasicRed;
-        if (rand < 90) return EnemyType.ZigZagBlue;
-
-        return EnemyType.ZigZagRed;
+        int count = System.Enum.GetValues(typeof(EnemyType)).Length;
+        return (EnemyType)Random.Range(0, count);
     }
 
     void SpawnEnemy(WaveManager waveManager)

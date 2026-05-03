@@ -83,8 +83,8 @@ public class UpgradeShopUI : MonoBehaviour
         speedValueText.text = $"{stats.speed.BaseValue} + {stats.speed.GetBonusValue()}";
 
         // Display Price tags
-        if (damageCostText != null) damageCostText.text = $"${stats.damage.GetUpgradeCost()}";
-        if (healthCostText != null) healthCostText.text = $"${stats.health.GetUpgradeCost()}";
-        if (speedCostText != null) speedCostText.text = $"${stats.speed.GetUpgradeCost()}";
+        if (damageCostText != null) damageCostText.text = $"Cost: {stats.damage.GetUpgradeCost()}";
+        if (healthCostText != null) healthCostText.text = $"Cost: {stats.health.GetUpgradeCost()}";
+        if (speedCostText != null) speedCostText.text = $"Cost: {stats.speed.GetUpgradeCost()}";
     }
 }

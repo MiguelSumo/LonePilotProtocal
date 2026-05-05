@@ -116,6 +116,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void Die()
     {
         Debug.Log("Player Died: Resetting Progress.");
+    
+        GameData.currentScore = ScoreManager.Instance.CurrentScore;
 
         currencyData.ResetCoins();
 
@@ -139,7 +141,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
 
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Main Menu");
+       // SceneManager.LoadScene("Main Menu");
+       SceneManager.LoadScene("EndGameScene");
     }
 
     // These link the Health script back to the ShipController "Wrappers"

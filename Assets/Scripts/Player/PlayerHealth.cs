@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
+    //Currency Reference 
+    [SerializeField] private CurrencyDataSO currencyData;
+
     [Header("Event Channels")]
     [SerializeField] private HealthChangedEventChannelSO healthChangedEvent;
 
@@ -113,6 +116,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void Die()
     {
         Debug.Log("Player Died: Resetting Progress.");
+
+        currencyData.ResetCoins();
 
         if (playerStats != null)
         {

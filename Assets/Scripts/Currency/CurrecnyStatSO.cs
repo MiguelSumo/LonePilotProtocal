@@ -14,6 +14,16 @@ public class CurrencyDataSO : ScriptableObject
         TotalCoins += amount;
     }
 
+    public void SubtractCoins(int amount)
+    {
+        TotalCoins -= amount;
+    }
+
+    public void ResetCoins()
+    {
+        TotalCoins = 0;
+    }
+
     // Call this at the end of a run or every time the score increases
     public void CheckAndSetHighScore(int currentScore)
     {

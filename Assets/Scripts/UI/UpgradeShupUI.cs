@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 public class UpgradeShopUI : MonoBehaviour
 {
+    //reference for coin amount
+    [SerializeField] private CurrencyDataSO currencyData;
+    [SerializeField] private TextMeshProUGUI shopBalanceText;
+    [SerializeField] private TextMeshProUGUI uiBalanceText;
+
+
+
     [SerializeField] private ShipStats_SO stats;
     [SerializeField] private ShipController player;
 
@@ -45,10 +52,10 @@ public class UpgradeShopUI : MonoBehaviour
         int cost = statToUpgrade.GetUpgradeCost();
 
         // 1. Check if ScoreManager exists and player has enough score
-        if (ScoreManager.Instance != null && ScoreManager.Instance.CurrentScore >= cost)
+        if (currencyData != null && currencyData.TotalCoins >= cost)
         {
             // 2. Subtract the score
-            ScoreManager.Instance.SubtractScore(cost);
+            currencyData.SubtractCoins(cost);
 
             // 3. Perform the upgrade
             stats.Accept(_upgrader, type);
@@ -86,5 +93,11 @@ public class UpgradeShopUI : MonoBehaviour
         if (damageCostText != null) damageCostText.text = $"Cost: {stats.damage.GetUpgradeCost()}";
         if (healthCostText != null) healthCostText.text = $"Cost: {stats.health.GetUpgradeCost()}";
         if (speedCostText != null) speedCostText.text = $"Cost: {stats.speed.GetUpgradeCost()}";
+
+        if (shopBalanceText != null && currencyData != null)
+        {
+            shopBalanceText.text = $": {currencyData.TotalCoins}";
+            uiBalanceText.text = $": {currencyData.TotalCoins}"; ;
+        }
     }
 }

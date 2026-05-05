@@ -43,6 +43,8 @@ public class WaveManager : MonoBehaviour
         EnemyHealthMultiplier = 1f + (currentWave * 0.05f);
         currentWave += 1;
 
+        GameData.waveNumber = currentWave;
+
         if (spawner != null) spawner.SpawnEnemies(this, enemiesPerWave);
     }
 

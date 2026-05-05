@@ -15,13 +15,13 @@ MonoBehaviour:
   damage:
     BaseValue: 2
     ValuePerLevel: 1
-    CurrentLevel: 3
+    CurrentLevel: 0
     BaseCost: 100
     CostPerLevel: 50
   health:
     BaseValue: 100
     ValuePerLevel: 5
-    CurrentLevel: 3
+    CurrentLevel: 0
     BaseCost: 150
     CostPerLevel: 50
   speed:
